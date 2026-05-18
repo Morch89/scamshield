@@ -305,7 +305,7 @@ async function submitFeedback() {
         </h1>
 
         <p style={{ color: "#9AAFC5", fontSize: 15, margin: "0 0 18px", lineHeight: 1.7 }}>
-          ScamShield Malaysia helps you check suspicious SMS, WhatsApp messages, bank alerts, parcel links, OTP requests, and fake prize claims.
+          ScamShield Malaysia (Beta) helps you check suspicious SMS, WhatsApp messages, bank alerts, parcel links, OTP requests, and fake prize claims.
         </p>
 
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20 }}>
