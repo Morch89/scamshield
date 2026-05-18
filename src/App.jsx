@@ -1,5 +1,47 @@
 import { useState } from "react";
 
+const UI_TEXT = {
+  en: {
+    home: "Home",
+    learn: "Learn More About Scams",
+    headline: "Check suspicious messages before you click.",
+    subtitle: "ScamShield Malaysia helps you check suspicious SMS, WhatsApp messages, bank alerts, parcel links, OTP requests, and fake prize claims.",
+    responseLanguage: "Language",
+    placeholder: "Paste the suspicious message or URL here...",
+    checkButton: "Check for Scam",
+    analysing: "Analysing...",
+    counter: "Scam checks performed",
+    privacy: "Privacy Policy",
+    disclaimer: "Disclaimer"
+  },
+  ms: {
+    home: "Laman Utama",
+    learn: "Ketahui Lebih Lanjut Tentang Scam",
+    headline: "Semak mesej mencurigakan sebelum anda klik.",
+    subtitle: "ScamShield Malaysia membantu anda menyemak SMS, mesej WhatsApp, amaran bank, pautan parcel, permintaan OTP dan tuntutan hadiah palsu.",
+    responseLanguage: "Bahasa",
+    placeholder: "Tampal mesej atau pautan yang mencurigakan di sini...",
+    checkButton: "Semak Scam",
+    analysing: "Sedang menganalisis...",
+    counter: "Semakan scam dibuat",
+    privacy: "Polisi Privasi",
+    disclaimer: "Penafian"
+  },
+  zh: {
+    home: "主页",
+    learn: "了解更多诈骗类型",
+    headline: "点击之前，先检查可疑信息。",
+    subtitle: "ScamShield Malaysia 可帮助你检查可疑短信、WhatsApp 信息、银行提醒、包裹链接、OTP 请求和虚假中奖信息。",
+    responseLanguage: "语言",
+    placeholder: "在这里粘贴可疑信息或链接...",
+    checkButton: "检查诈骗",
+    analysing: "分析中...",
+    counter: "已完成诈骗检查",
+    privacy: "隐私政策",
+    disclaimer: "免责声明"
+  }
+};
+
 const VERDICTS = {
   "LIKELY SCAM": { bg: "#FF3B30", light: "#FFF0EF", text: "#CC0000", icon: "⚠️" },
   "POSSIBLE SCAM": { bg: "#FF9500", light: "#FFF8EE", text: "#B35900", icon: "🔶" },
@@ -201,6 +243,7 @@ export default function ScamShield() {
   const [error, setError] = useState("");
   const [page, setPage] = useState("home");
   const [language, setLanguage] = useState("en");
+  const t = UI_TEXT[language] || UI_TEXT.en;
   const [checkCount, setCheckCount] = useState(() => Number(localStorage.getItem("scamshield_checks") || 0));
   const [feedback, setFeedback] = useState("");
   const [feedbackSent, setFeedbackSent] = useState(false);
@@ -287,11 +330,11 @@ async function submitFeedback() {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 26 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <button onClick={() => setPage("home")} style={{ background: page === "home" ? "linear-gradient(135deg,#00C864,#009950)" : "rgba(255,255,255,0.06)", color: "#fff", border: "1px solid rgba(255,255,255,0.08)", padding: "10px 16px", borderRadius: 12, fontWeight: 700, cursor: "pointer", fontSize: 13 }}>
-              🛡️ Home
+              🛡️ {t.home}
             </button>
 
             <button onClick={() => setPage("learn")} style={{ background: page === "learn" ? "linear-gradient(135deg,#00C864,#009950)" : "rgba(255,255,255,0.06)", color: "#fff", border: "1px solid rgba(255,255,255,0.08)", padding: "10px 16px", borderRadius: 12, fontWeight: 700, cursor: "pointer", fontSize: 13 }}>
-              📚 Learn More About Scams
+              📚 {t.Learn}
             </button>
           </div>
         </div>
@@ -305,7 +348,7 @@ async function submitFeedback() {
         </div>
 
         <h1 style={{ color: "#fff", fontSize: 34, lineHeight: 1.12, margin: "20px 0 10px", letterSpacing: "-0.04em" }}>
-          Check suspicious messages before you click.
+          {t.headline}
         </h1>
 
         <p style={{ color: "#9AAFC5", fontSize: 15, margin: "0 0 18px", lineHeight: 1.7 }}>
@@ -376,7 +419,7 @@ async function submitFeedback() {
               <textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                placeholder={"Paste the suspicious message or URL here...\n\nExamples:\n- Tahniah! Anda menang RM5,000 dari KWSP...\n- http://maybank-reward.com/claim\n- Your parcel is held, pay RM15 to release"}
+                placeholder={t.placeholder}
                 rows={8}
                 style={{ width: "100%", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 12, padding: "14px 16px", color: "#E5E5EA", fontSize: 14, fontFamily: "inherit", lineHeight: 1.65, resize: "none", outline: "none", boxSizing: "border-box" }}
               />
@@ -388,7 +431,7 @@ async function submitFeedback() {
               )}
 
               <button onClick={analyze} disabled={loading || !text.trim()} style={{ width: "100%", marginTop: 14, padding: "15px 0", borderRadius: 12, fontSize: 15, fontWeight: 800, fontFamily: "inherit", border: "none", background: text.trim() && !loading ? "linear-gradient(135deg,#00C864,#009950)" : "rgba(0,200,100,0.2)", color: "#fff", cursor: text.trim() && !loading ? "pointer" : "not-allowed", boxShadow: text.trim() && !loading ? "0 4px 20px rgba(0,200,100,0.3)" : "none" }}>
-                {loading ? "Analysing..." : "Check for Scam"}
+                {loading ? t.Analysing: t.checkbutton}
               </button>
 
               <div style={{ marginTop: 14, display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
@@ -481,7 +524,7 @@ async function submitFeedback() {
                 <div style={{ color: "#fff", fontWeight: 800, marginBottom: 6, fontSize: 15 }}>💬 Feedback & Suggestions</div>
                 <div style={{ color: "#7A8FA6", fontSize: 12, lineHeight: 1.6, marginBottom: 12 }}>Help improve ScamShield by sharing feedback or reporting issues.</div>
 
-                <textarea value={feedback} onChange={(e) => setFeedback(e.target.value)} placeholder="Share your feedback..." rows={4} style={{ width: "100%", background: "rgba(0,0,0,0.25)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "12px 14px", color: "#fff", resize: "none", fontSize: 13, outline: "none", boxSizing: "border-box" }} />
+                <textarea value={feedback} onChange={(e) => setFeedback(e.target.value)} placeholder=rgba(0,0,0,0.25)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "12px 14px", color: "#fff", resize: "none", fontSize: 13, outline: "none", boxSizing: "border-box" }} />
 
                {!feedbackSent ? (
   <button
