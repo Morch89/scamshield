@@ -4,22 +4,31 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { text } = req.body;
+    const { text, language = "en" } = req.body;
 
     if (!text || text.trim().length < 5) {
       return res.status(400).json({
         error: "Please enter a message to check."
       });
     }
-
+const languageInstruction = {
+  en: "Respond in English.",
+  ms: "Respond in Bahasa Melayu.",
+  zh: "Respond in Simplified Chinese."
+}[language] || "Respond in English.";
     const prompt = `
 You are ScamShield Malaysia.
+
+${languageInstruction}
 
 Analyze the message below and determine scam risk.
 
 Return ONLY valid raw JSON.
 Do not use markdown.
 Do not use backticks.
+
+The JSON keys must remain in English.
+Only translate the values.
 
 Format:
 {
