@@ -203,6 +203,7 @@ export default function ScamShield() {
   const [checkCount, setCheckCount] = useState(() => Number(localStorage.getItem("scamshield_checks") || 0));
   const [feedback, setFeedback] = useState("");
   const [feedbackSent, setFeedbackSent] = useState(false);
+  const [sendingFeedback, setSendingFeedback] = useState(false);
 
   async function analyze() {
     const input = text.trim();
@@ -242,7 +243,36 @@ setResult(data);
 
     setLoading(false);
   }
+async function submitFeedback() {
+  if (!feedback.trim()) return;
 
+  setSendingFeedback(true);
+
+  try {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbwrL8ZxIRO6h7QgrFRSSF4C9J-oKG0HGmyjozY3kST41DKXaIE0SuqUJTXFrotN__qaZg/exec", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        feedback
+      })
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      throw new Error(data.error || "Failed to send feedback.");
+    }
+
+    setFeedback("");
+    setFeedbackSent(true);
+  } catch (err) {
+    alert("Failed to send feedback.");
+  }
+
+  setSendingFeedback(false);
+}
   function reset() {
     setResult(null);
     setText("");
@@ -422,13 +452,32 @@ setResult(data);
 
                 <textarea value={feedback} onChange={(e) => setFeedback(e.target.value)} placeholder="Share your feedback..." rows={4} style={{ width: "100%", background: "rgba(0,0,0,0.25)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "12px 14px", color: "#fff", resize: "none", fontSize: 13, outline: "none", boxSizing: "border-box" }} />
 
-                {!feedbackSent ? (
-                  <a href={`mailto:life.alexchoo@gmail.com?subject=ScamShield Feedback&body=${encodeURIComponent(feedback)}`} onClick={() => setFeedbackSent(true)} style={{ marginTop: 12, display: "inline-block", background: "linear-gradient(135deg,#00C864,#009950)", color: "#fff", textDecoration: "none", padding: "10px 16px", borderRadius: 12, fontWeight: 700, fontSize: 13 }}>
-                    Send Feedback
-                  </a>
-                ) : (
-                  <div style={{ marginTop: 12, color: "#00C864", fontWeight: 700, fontSize: 13 }}>✅ Thank you for your feedback!</div>
-                )}
+               {!feedbackSent ? (
+  <button
+    onClick={submitFeedback}
+    disabled={sendingFeedback || !feedback.trim()}
+    style={{
+      marginTop: 12,
+      display: "inline-block",
+      background: "linear-gradient(135deg,#00C864,#009950)",
+      color: "#fff",
+      border: "none",
+      textDecoration: "none",
+      padding: "10px 16px",
+      borderRadius: 12,
+      fontWeight: 700,
+      fontSize: 13,
+      cursor: sendingFeedback || !feedback.trim() ? "not-allowed" : "pointer",
+      opacity: sendingFeedback || !feedback.trim() ? 0.6 : 1
+    }}
+  >
+    {sendingFeedback ? "Sending..." : "Send Feedback"}
+  </button>
+) : (
+  <div style={{ marginTop: 12, color: "#00C864", fontWeight: 700, fontSize: 13 }}>
+    ✅ Thank you for your feedback!
+  </div>
+)}
               </div>
 
               <p style={{ textAlign: "center", color: "#3D5166", fontSize: 11, marginTop: 12, lineHeight: 1.6, padding: "0 8px" }}>
