@@ -249,24 +249,20 @@ async function submitFeedback() {
   setSendingFeedback(true);
 
   try {
-    const res = await fetch("https://script.google.com/macros/s/AKfycbwrL8ZxIRO6h7QgrFRSSF4C9J-oKG0HGmyjozY3kST41DKXaIE0SuqUJTXFrotN__qaZg/exec", {
+    await fetch("https://script.google.com/macros/s/AKfycbwrL8ZxIRO6h7QgrFRSSF4C9J-oKG0HGmyjozY3kST41DKXaIE0SuqUJTXFrotN__qaZg/exec", {
       method: "POST",
+      mode: "no-cors",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "text/plain"
       },
       body: JSON.stringify({
         feedback
       })
     });
 
-    const data = await res.json();
-
-    if (!data.success) {
-      throw new Error(data.error || "Failed to send feedback.");
-    }
-
     setFeedback("");
     setFeedbackSent(true);
+
   } catch (err) {
     alert("Failed to send feedback.");
   }
