@@ -341,7 +341,7 @@ setResult(data);
               </div>
 
               <p style={{ textAlign: "center", color: "#3D5166", fontSize: 11, marginTop: 12, lineHeight: 1.5 }}>
-                Preview mode uses a demo analyzer. Connect your backend before going live.
+                ScamShield uses AI to assess risk. Results are advisory only. Always report to authorities if you suspect fraud.
               </p>
             </div>
           ) : (
