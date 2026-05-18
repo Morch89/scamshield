@@ -145,8 +145,19 @@ export default function ScamShield() {
       // Do not call OpenAI directly from browser code with your real API key.
       // For Wix, call a Velo backend function instead. For Vercel/Netlify, call your own serverless API route.
       // This preview uses a local demo analyzer so you can test the UI safely.
-      await new Promise((resolve) => setTimeout(resolve, 650));
-      setResult(createDemoResult(input));
+      const res = await fetch("/api/check-scam", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ text: input })
+});
+
+const data = await res.json();
+
+if (!res.ok) {
+  throw new Error(data.error || "Analysis failed.");
+}
+
+setResult(data);
 
       /*
       Example production call to YOUR backend, not directly to OpenAI:
@@ -217,7 +228,7 @@ export default function ScamShield() {
             </button>
 
             <p style={{ textAlign: "center", color: "#3D5166", fontSize: 11, marginTop: 12, lineHeight: 1.5 }}>
-              Preview mode uses a demo analyzer. Connect your backend before going live.
+              Your data is not stored. For emergencies call 997 (CCID Scam Response Centre)
             </p>
           </div>
         ) : (
