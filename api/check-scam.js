@@ -12,23 +12,16 @@ export default async function handler(req, res) {
       });
     }
 
-    const response = await fetch(
-      "https://api.anthropic.com/v1/messages",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": process.env.ANTHROPIC_API_KEY,
-          "anthropic-version": "2023-06-01"
-        },
-        body: JSON.stringify({
-          model: "claude-3-5-sonnet-20241022",
-          max_tokens: 1000,
-          system: `
+    const prompt = `
 You are ScamShield Malaysia.
 
-Return ONLY valid JSON.
+Analyze the message below and determine scam risk.
 
+Return ONLY valid raw JSON.
+Do not use markdown.
+Do not use backticks.
+
+Format:
 {
   "verdict": "LIKELY SCAM" or "POSSIBLE SCAM" or "LOOKS SAFE",
   "riskScore": number 0-100,
@@ -37,19 +30,38 @@ Return ONLY valid JSON.
   "whatToDo": ["action1", "action2"],
   "scamType": "type of scam or null",
   "officialLinks": [
-    {"label":"PDRM","url":"https://www.rmp.gov.my/"},
-    {"label":"BNM","url":"https://www.bnm.gov.my/"},
-    {"label":"MCMC","url":"https://aduan.skmm.gov.my/"},
-    {"label":"Semak Mule","url":"https://semak.mule.com.my/"}
+    {
+      "label": "label",
+      "url": "url"
+    }
   ]
 }
 
-Always return raw JSON only.
-`,
-          messages: [
+Use real Malaysian resources:
+- https://semakmule.rmp.gov.my/
+- https://www.rmp.gov.my/
+- https://www.bnm.gov.my/
+- https://aduan.skmm.gov.my/
+
+Message:
+${text}
+`;
+
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          contents: [
             {
-              role: "user",
-              content: `Analyze this for scam indicators:\n\n${text}`
+              parts: [
+                {
+                  text: prompt
+                }
+              ]
             }
           ]
         })
@@ -60,16 +72,18 @@ Always return raw JSON only.
 
     if (!response.ok) {
       return res.status(response.status).json({
-        error: data.error?.message || "Anthropic request failed"
+        error:
+          data.error?.message ||
+          "Gemini API request failed"
       });
     }
 
     const raw =
-      data.content?.map(x => x.text || "").join("").trim() || "";
+      data.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!raw) {
       return res.status(500).json({
-        error: "Empty response from Anthropic"
+        error: "No response returned from Gemini."
       });
     }
 
@@ -78,9 +92,7 @@ Always return raw JSON only.
       .replace(/```/g, "")
       .trim();
 
-    const parsed = JSON.parse(cleaned);
-
-    return res.status(200).json(parsed);
+    return res.status(200).json(JSON.parse(cleaned));
 
   } catch (err) {
     return res.status(500).json({
