@@ -1,7 +1,6 @@
 const TRUSTED_DOMAINS = [
   // ScamShield deployments
-  "scamshield-virid.vercel.app",
-  "scamshield-umj6.vercel.app",
+  "scamshield-malaysia.vercel.app",
 
   // Malaysia government / official resources
   "gov.my",
@@ -16,6 +15,10 @@ const TRUSTED_DOMAINS = [
   "mof.gov.my",
   "malaysia.gov.my",
   "mysejahtera.malaysia.gov.my",
+  "nfcc.jpm.gov.my",
+  "mycert.org.my",
+  "mcmc.gov.my",
+  "skmm.gov.my",
 
   // Banks / finance
   "maybank2u.com.my",
@@ -30,12 +33,26 @@ const TRUSTED_DOMAINS = [
   "uob.com.my",
   "hsbc.com.my",
   "ocbc.com.my",
+  "affinalways.com",
+  "alliancebank.com.my",
+  "bankrakyat.com.my",
+  "bsn.com.my",
+  "bankmuamalat.com.my",
+  "alrajhibank.com.my",
+  "standardchartered.com.my",
+  "citibank.com.my",
+  "kuwaitfinance.com.my",
+  "agrobank.com.my",
+  "mbsbbank.com",
 
   // E-wallets / payment
   "touchngo.com.my",
   "tngdigital.com.my",
   "grab.com",
   "boost.com.my",
+  "bigpayme.com",
+  "setel.com",
+  "mae.com.my"
 
   // Shopping / logistics
   "shopee.com.my",
