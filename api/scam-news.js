@@ -38,21 +38,65 @@ const feeds = [
   },
 
   // =========================
-  // CHINESE - Malaysia
-  // =========================
+// CHINESE - Malaysia
+// =========================
 
-  {
-    url:
-      "https://news.google.com/rss/search?q=(site:orientaldaily.com.my+OR+site:sinchew.com.my+OR+site:chinapress.com.my)+诈骗+OR+骗局+OR+网络诈骗&hl=zh-CN&gl=MY&ceid=MY:zh-CN",
-    language: "zh"
-  },
+{
+  url:
+    `https://news.google.com/rss/search?q=${encodeURIComponent(
+      "site:orientaldaily.com.my 诈骗"
+    )}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
+  language: "zh"
+},
 
-  {
-    url:
-      "https://news.google.com/rss/search?q=(site:orientaldaily.com.my+OR+site:nanyang.com.my)+钓鱼诈骗+OR+银行诈骗+OR+包裹诈骗&hl=zh-CN&gl=MY&ceid=MY:zh-CN",
-    language: "zh"
-  }
-];
+{
+  url:
+    `https://news.google.com/rss/search?q=${encodeURIComponent(
+      "site:orientaldaily.com.my 投资骗局"
+    )}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
+  language: "zh"
+},
+
+{
+  url:
+    `https://news.google.com/rss/search?q=${encodeURIComponent(
+      "site:sinchew.com.my 诈骗"
+    )}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
+  language: "zh"
+},
+
+{
+  url:
+    `https://news.google.com/rss/search?q=${encodeURIComponent(
+      "site:sinchew.com.my 骗局"
+    )}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
+  language: "zh"
+},
+
+{
+  url:
+    `https://news.google.com/rss/search?q=${encodeURIComponent(
+      "site:chinapress.com.my 投资骗局"
+    )}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
+  language: "zh"
+},
+
+{
+  url:
+    `https://news.google.com/rss/search?q=${encodeURIComponent(
+      "site:chinapress.com.my 诈骗 OR 骗局"
+    )}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
+  language: "zh"
+},
+
+// Chinese fallback - broader Malaysia search
+{
+  url:
+    `https://news.google.com/rss/search?q=${encodeURIComponent(
+      "马来西亚 诈骗 OR 骗局 OR 投资骗局 OR 网络诈骗"
+    )}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
+  language: "zh"
+}
 
     const allArticles = [];
 
