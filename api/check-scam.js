@@ -533,7 +533,11 @@ if (finalScore >= 75) {
 } else {
   parsed.verdict = "LOOKS SAFE";
 }
+    const feedbackId =
+  req.body.feedbackId ||
+  `chk_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 await logScamCheck({
+  feedbackID,
   timestamp: new Date().toISOString(),
   source: req.body.source || "website",
   language,
@@ -546,6 +550,9 @@ await logScamCheck({
   targetBrand: parsed.targetBrand || null,
   userRisk: parsed.userRisk || null
 });
+
+    parsed.feedbackId = feedbackId;
+    
 return res.status(200).json(parsed);
   } catch (err) {
     return res.status(500).json({
