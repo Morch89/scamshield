@@ -189,32 +189,7 @@ if (!scamResponse.ok) {
     ocrData
   });
 }
-try {
-  await fetch(process.env.LOG_WEBHOOK_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      timestamp: new Date().toISOString(),
-      source: req.body.source || "screenshot",
-      language,
 
-      input: ocrData?.extractedText || null,
-
-      verdict: scamData.verdict,
-      riskScore: scamData.riskScore,
-      confidence: scamData.confidence || null,
-
-      scamType: scamData.scamType || null,
-      scamFamily: scamData.scamFamily || null,
-      targetBrand: scamData.targetBrand || null,
-      userRisk: scamData.userRisk || null
-    })
-  });
-} catch (err) {
-  console.error("Screenshot logging failed:", err.message);
-}
 return res.status(200).json({
   ...scamData,
   source: "screenshot",
