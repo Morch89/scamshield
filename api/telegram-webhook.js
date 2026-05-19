@@ -3,11 +3,59 @@ export default async function handler(req, res) {
     const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 
     if (req.method !== "POST") {
-      return res.status(200).json({
-        ok: true,
-        message: "Telegram webhook is live."
-      });
-    }
+  return res.status(200).json({
+    ok: true,
+    message: "Telegram webhook is live."
+  });
+}
+
+// TELEGRAM BUTTON CALLBACKS
+const callbackQuery = req.body?.callback_query;
+
+if (callbackQuery) {
+
+  const chat_id = callbackQuery.message?.chat?.id;
+  const feedbackType = callbackQuery.data;
+
+  let feedbackText = "unknown";
+
+  if (feedbackType === "feedback_helpful") {
+    feedbackText = "Helpful";
+  }
+
+  if (feedbackType === "feedback_incorrect") {
+    feedbackText = "Incorrect";
+  }
+
+  // LOG TO GOOGLE SHEETS
+  await fetch(process.env.LOG_WEBHOOK_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain"
+    },
+    body: JSON.stringify({
+      action: "feedback",
+      source: "telegram",
+      feedback: feedbackText
+    })
+  });
+
+  // SMALL TELEGRAM POPUP
+  await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/answerCallbackQuery`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      callback_query_id: callbackQuery.id,
+      text: "Feedback recorded!"
+    })
+  });
+
+  return res.status(200).json({
+    ok: true
+  });
+}
 
 const message = req.body?.message;
 
@@ -178,7 +226,21 @@ if (photos && photos.length > 0) {
     },
     body: JSON.stringify({
       chat_id,
-      text: `
+      text: `...`,
+      reply_markup: {
+  inline_keyboard: [
+    [
+      {
+        text: "👍 Helpful",
+        callback_data: "feedback_helpful"
+      },
+      {
+        text: "👎 Incorrect",
+        callback_data: "feedback_incorrect"
+      }
+    ]
+  ]
+}
 🛡 ScamShield Malaysia
 
 Verdict: ${result.verdict}
@@ -241,7 +303,21 @@ ${result.summary}
       },
       body: JSON.stringify({
         chat_id,
-        text: `
+        text: `...`,
+        reply_markup: {
+  inline_keyboard: [
+    [
+      {
+        text: "👍 Helpful",
+        callback_data: "feedback_helpful"
+      },
+      {
+        text: "👎 Incorrect",
+        callback_data: "feedback_incorrect"
+      }
+    ]
+  ]
+}
 🛡 ScamShield Malaysia
 
 Verdict: ${result.verdict}
