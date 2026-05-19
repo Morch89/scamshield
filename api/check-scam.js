@@ -538,7 +538,7 @@ if (finalScore >= 75) {
   req.body.feedbackId ||
   `chk_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 
-await logScamCheck({
+logScamCheck({
   feedbackId,
   timestamp: new Date().toISOString(),
   source: req.body.source || "website",
