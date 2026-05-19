@@ -327,35 +327,76 @@ async function submitFeedback() {
   return (
     <div style={{ minHeight: "100vh", background: "linear-gradient(160deg,#050d1a 0%,#0a1628 70%,#05120a 100%)", fontFamily: "'Segoe UI',system-ui,sans-serif", display: "flex", flexDirection: "column", alignItems: "center", paddingBottom: 60 }}>
       <div style={{ width: "100%", maxWidth: 760, padding: "24px 20px 0" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 26 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <button onClick={() => setPage("home")} style={{ background: page === "home" ? "linear-gradient(135deg,#00C864,#009950)" : "rgba(255,255,255,0.06)", color: "#fff", border: "1px solid rgba(255,255,255,0.08)", padding: "10px 16px", borderRadius: 12, fontWeight: 700, cursor: "pointer", fontSize: 13 }}>
-              🛡️ {t.home}
-            </button>
-
-            <button onClick={() => setPage("learn")} style={{ background: page === "learn" ? "linear-gradient(135deg,#00C864,#009950)" : "rgba(255,255,255,0.06)", color: "#fff", border: "1px solid rgba(255,255,255,0.08)", padding: "10px 16px", borderRadius: 12, fontWeight: 700, cursor: "pointer", fontSize: 13 }}>
-              📚 {t.learn}
-            </button>
-          </div>
-        </div>
-<select
-  value={language}
-  onChange={(e) => setLanguage(e.target.value)}
+        <div
   style={{
-    background: "rgba(255,255,255,0.06)",
-    color: "#fff",
-    border: "1px solid rgba(255,255,255,0.08)",
-    padding: "10px 12px",
-    borderRadius: 12,
-    fontWeight: 700,
-    cursor: "pointer",
-    fontSize: 13
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 26
   }}
 >
-  <option value="en">English</option>
-  <option value="ms">Bahasa Melayu</option>
-  <option value="zh">中文</option>
-</select>
+  {/* LEFT SIDE */}
+  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+    <button
+      onClick={() => setPage("home")}
+      style={{
+        background:
+          page === "home"
+            ? "linear-gradient(135deg,#00C864,#009950)"
+            : "rgba(255,255,255,0.06)",
+        color: "#fff",
+        border: "1px solid rgba(255,255,255,0.08)",
+        padding: "10px 16px",
+        borderRadius: 12,
+        fontWeight: 700,
+        cursor: "pointer",
+        fontSize: 13
+      }}
+    >
+      🛡️ {t.home}
+    </button>
+
+    <button
+      onClick={() => setPage("learn")}
+      style={{
+        background:
+          page === "learn"
+            ? "linear-gradient(135deg,#00C864,#009950)"
+            : "rgba(255,255,255,0.06)",
+        color: "#fff",
+        border: "1px solid rgba(255,255,255,0.08)",
+        padding: "10px 16px",
+        borderRadius: 12,
+        fontWeight: 700,
+        cursor: "pointer",
+        fontSize: 13
+      }}
+    >
+      📚 {t.learn}
+    </button>
+  </div>
+
+  {/* RIGHT SIDE */}
+  <select
+    value={language}
+    onChange={(e) => setLanguage(e.target.value)}
+    style={{
+      background: "rgba(255,255,255,0.06)",
+      color: "#fff",
+      border: "1px solid rgba(255,255,255,0.08)",
+      padding: "10px 14px",
+      borderRadius: 12,
+      fontWeight: 700,
+      cursor: "pointer",
+      fontSize: 13,
+      outline: "none"
+    }}
+  >
+    <option value="en">English</option>
+    <option value="ms">Bahasa Melayu</option>
+    <option value="zh">中文</option>
+  </select>
+</div>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
           <div style={{ width: 46, height: 46, borderRadius: 14, background: "linear-gradient(135deg,#00C864,#009950)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, boxShadow: "0 4px 20px rgba(0,200,100,0.35)" }}>🛡️</div>
           <div>
