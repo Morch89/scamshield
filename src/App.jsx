@@ -1258,23 +1258,24 @@ function reset() {
                   <div
   style={{
     marginBottom: 16,
-    background: "rgba(34,158,217,0.08)",
-    border: "1px solid rgba(34,158,217,0.25)",
+    background: "linear-gradient(135deg,#0B1F33,#102A43)",
+    border: "1px solid rgba(34,158,217,0.45)",
     borderRadius: 14,
     padding: 16,
     textAlign: "center"
   }}
 >
   <div
-    style={{
-      color: "#FFFFFF",
-      fontWeight: 800,
-      marginBottom: 10,
-      fontSize: 15
-    }}
-  >
-    ✈️ Want instant scam checks directly in Telegram?
-  </div>
+  style={{
+    color: "#FFFFFF",
+    fontWeight: 800,
+    marginBottom: 12,
+    fontSize: 15,
+    textShadow: "0 1px 2px rgba(0,0,0,0.45)"
+  }}
+>
+  ✈️ Want instant scam checks directly in Telegram?
+</div>
 
   <a
     href="https://t.me/ScamShieldMalaysiaBot"
