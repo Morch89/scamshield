@@ -138,7 +138,30 @@ export default async function handler(req, res) {
       seen.add(article.url);
       return true;
     });
+    const hasChineseArticles = uniqueArticles.some(
+  (article) => article.language === "zh"
+);
 
+if (!hasChineseArticles) {
+  uniqueArticles.push(
+    {
+      title: "误信24小时可获双倍回酬 华裔女会计师被骗逾15万",
+      description: "中国报报道，一名女子误信投资可在短时间内获得高回报，结果被骗超过15万令吉。",
+      url: "https://www.chinapress.com.my/20260514/%e8%af%af%e4%bf%a124%e5%b0%8f%e6%97%b6%e5%8f%af%e8%8e%b7%e5%8f%8c%e5%80%8d%e5%9b%9e%e9%85%ac-%e5%8d%8e%e8%a3%94%e5%a5%b3%e4%bc%9a%e8%ae%a1%e5%b8%88%e8%a2%ab%e9%aa%97%e9%80%be15%e4%b8%87/",
+      source: "中国报",
+      publishedAt: "2026-05-14T00:00:00.000Z",
+      language: "zh"
+    },
+    {
+      title: "误信投资赚进164万 退休教师提现失败方知被骗35万",
+      description: "中国报报道，一名退休教师误信投资骗局，在无法提现后才发现被骗35万令吉。",
+      url: "https://www.chinapress.com.my/20260514/%e8%af%af%e4%bf%a1%e6%8a%95%e8%b5%84%e8%b5%9a%e8%bf%9b164%e4%b8%87-%e9%80%80%e4%bc%91%e6%95%99%e5%b8%88%e6%8f%90%e7%8e%b0%e5%a4%b1%e8%b4%a5-%e6%96%b9%e7%9f%a5%e8%a2%ab%e8%af%8835%e4%b8%87/",
+      source: "中国报",
+      publishedAt: "2026-05-14T00:00:00.000Z",
+      language: "zh"
+    }
+  );
+}
     return res.status(200).json({
       articles: uniqueArticles.slice(0, 30)
     });
