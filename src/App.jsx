@@ -15,7 +15,7 @@ const UI_TEXT = {
     disclaimer: "Disclaimer",
     educationTitle: "Scam Education Centre",
     educationSubtitle: "Learn about common scams affecting Malaysians.",
-    example: "Example:"
+    example: "Example:",
     feature1: "Malaysia-focused",
 feature2: "Instant check",
 feature3: "No login needed",
@@ -44,7 +44,7 @@ step3Desc: "Get clear next steps.",
     disclaimer: "Penafian",
     educationTitle: "Pusat Pendidikan Scam",
     educationSubtitle: "Ketahui jenis scam biasa yang menyasarkan rakyat Malaysia.",
-    example: "Contoh:"
+    example: "Contoh:",
   feature1: "Fokus Malaysia",
 feature2: "Semakan segera",
 feature3: "Tiada login diperlukan",
@@ -73,7 +73,7 @@ step3Desc: "Dapatkan langkah seterusnya.",
     disclaimer: "免责声明",
     educationTitle: "诈骗教育中心",
     educationSubtitle: "了解常见的马来西亚诈骗类型。",
-    example: "例子："
+    example: "例子：",
     feature1: "马来西亚专属",
 feature2: "即时检测",
 feature3: "无需登录",
@@ -677,75 +677,60 @@ async function submitFeedback() {
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10, marginBottom: 6 }}>
-         [
-  {
-    number: "1",
-    title: t.step1Title,
-    desc: t.step1Desc
-  },
-  {
-    number: "2",
-    title: t.step2Title,
-    desc: t.step2Desc
-  },
-  {
-    number: "3",
-    title: t.step3Title,
-    desc: t.step3Desc
-  }
-].map((card, i) => (
-  <div
-    key={i}
-    style={{
-      flex: 1,
-      background: "rgba(255,255,255,0.04)",
-      border: "1px solid rgba(255,255,255,0.08)",
-      borderRadius: 20,
-      padding: 24,
-      minWidth: 180
-    }}
-  >
+  {[
+    {
+      number: "1",
+      title: t.step1Title,
+      desc: t.step1Desc
+    },
+    {
+      number: "2",
+      title: t.step2Title,
+      desc: t.step2Desc
+    },
+    {
+      number: "3",
+      title: t.step3Title,
+      desc: t.step3Desc
+    }
+  ].map((card, i) => (
     <div
+      key={i}
       style={{
-        width: 28,
-        height: 28,
-        borderRadius: "50%",
-        background: "#00C864",
-        color: "#001B09",
-        fontWeight: 800,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        marginBottom: 18
+        background: "rgba(255,255,255,0.055)",
+        border: "1px solid rgba(255,255,255,0.08)",
+        borderRadius: 14,
+        padding: 13
       }}
     >
-      {card.number}
-    </div>
-
-    <div
-      style={{
-        color: "#fff",
-        fontWeight: 800,
-        fontSize: 16,
-        marginBottom: 6
-      }}
-    >
-      {card.title}
-    </div>
-
-    <div
-      style={{
-        color: "#8FA5BC",
-        fontSize: 14,
-        lineHeight: 1.6
-      }}
-    >
-      {card.desc}
-    </div>
-  </div>
-))
-        </div>
+      <div
+        style={{
+          width: 24,
+          height: 24,
+          borderRadius: "50%",
+          background: "#00C864",
+          color: "#001A0B",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontWeight: 900,
+          fontSize: 12,
+          marginBottom: 8
+        }}
+      >
+        {card.number}
       </div>
+
+      <div style={{ color: "#fff", fontWeight: 800, fontSize: 13 }}>
+        {card.title}
+      </div>
+
+      <div style={{ color: "#7A8FA6", fontSize: 11, lineHeight: 1.5, marginTop: 4 }}>
+        {card.desc}
+      </div>
+    </div>
+  ))}
+</div>
 
       {page === "home" && (
         <div style={{ width: "100%", maxWidth: 600, padding: "20px 20px 0" }}>
