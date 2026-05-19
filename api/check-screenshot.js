@@ -124,6 +124,8 @@ Return ONLY valid raw JSON:
     const ocrData = safeJsonParse(raw);
     return res.status(200).json({
   debug: true,
+  message: "OCR step completed. Scam check not called yet.",
+  rawModelOutput: raw,
   ocrData
 });
     if (!ocrData.extractedText || ocrData.extractedText.trim().length < 5) {
