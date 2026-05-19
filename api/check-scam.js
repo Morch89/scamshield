@@ -52,7 +52,7 @@ const TRUSTED_DOMAINS = [
   "boost.com.my",
   "bigpayme.com",
   "setel.com",
-  "mae.com.my"
+  "mae.com.my",
 
   // Shopping / logistics
   "shopee.com.my",
