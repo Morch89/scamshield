@@ -12,47 +12,44 @@ export default async function handler(req, res) {
     // TELEGRAM BUTTON CALLBACKS
     const callbackQuery = req.body?.callback_query;
 
-    if (callbackQuery) {
-      const chat_id = callbackQuery.message?.chat?.id;
-      const feedbackType = callbackQuery.data;
+if (callbackQuery) {
+  const chat_id = callbackQuery.message?.chat?.id;
+  const callbackData = callbackQuery.data || "";
 
-      let feedbackText = "unknown";
+  const parts = callbackData.split(":");
+  const action = parts[0];
+  const feedback = parts[1];
+  const feedbackId = parts[2];
 
-      if (feedbackType === "feedback_helpful") {
-        feedbackText = "Helpful";
-      }
+  if (action === "check_feedback" && feedbackId) {
+    await fetch(process.env.LOG_WEBHOOK_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain"
+      },
+      body: JSON.stringify({
+        action: "checkFeedback",
+        feedbackId,
+        feedback
+      })
+    });
 
-      if (feedbackType === "feedback_incorrect") {
-        feedbackText = "Incorrect";
-      }
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/answerCallbackQuery`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        callback_query_id: callbackQuery.id,
+        text: "Thanks! Feedback recorded."
+      })
+    });
 
-      await fetch(process.env.LOG_WEBHOOK_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "text/plain"
-        },
-        body: JSON.stringify({
-          action: "feedback",
-          source: "telegram",
-          feedback: feedbackText
-        })
-      });
+    return res.status(200).json({ ok: true });
+  }
 
-      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/answerCallbackQuery`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          callback_query_id: callbackQuery.id,
-          text: "Feedback recorded!"
-        })
-      });
-
-      return res.status(200).json({
-        ok: true
-      });
-    }
+  return res.status(200).json({ ok: true });
+}
 
     const message = req.body?.message;
 
@@ -227,11 +224,11 @@ ${result.summary}
               [
                 {
                   text: "👍 Helpful",
-                  callback_data: "feedback_helpful"
+                  callback_data: `check_feedback:helpful:${result.feedbackId || ""}`
                 },
                 {
                   text: "👎 Incorrect",
-                  callback_data: "feedback_incorrect"
+                  callback_data: `check_feedback:incorrect:${result.feedbackId || ""}`
                 }
               ]
             ]
@@ -308,11 +305,11 @@ What To Do:
             [
               {
                 text: "👍 Helpful",
-                callback_data: "feedback_helpful"
+                callback_data: `check_feedback:helpful:${result.feedbackId || ""}`
               },
               {
                 text: "👎 Incorrect",
-                callback_data: "feedback_incorrect"
+                callback_data: `check_feedback:incorrect:${result.feedbackId || ""}`
               }
             ]
           ]
