@@ -628,7 +628,7 @@ async function submitFeedback() {
   setImagePreview("");
   setScreenshotFileName("");
 }
-  }
+  
 
   const v = result ? VERDICTS[result.verdict] || VERDICTS["LOOKS SAFE"] : null;
 
