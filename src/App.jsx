@@ -731,7 +731,7 @@ async function submitFeedback() {
     </div>
   ))}
 </div>
-
+</div>
       {page === "home" && (
         <div style={{ width: "100%", maxWidth: 600, padding: "20px 20px 0" }}>
           {!result ? (
