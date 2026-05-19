@@ -755,9 +755,12 @@ function reset() {
     cursor: "pointer",
     fontSize: 13,
     textDecoration: "none",
-    display: "flex",
+    display: "inline-flex",
     alignItems: "center",
-    gap: 8
+    gap: 6,
+    minWidth: 0,
+    whiteSpace: "nowrap",
+    lineHeight: 1.2
   }}
 >
   ✈️ Telegram Bot
