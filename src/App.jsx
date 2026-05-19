@@ -39,6 +39,12 @@ close: "Close",
 helpful: "Helpful",
 incorrect: "Incorrect",
 checkFeedbackThanks: "✅ Thanks! Your feedback has been recorded.",
+    news: "Scam News",
+newsTitle: "Recent Scam News in Malaysia",
+newsSubtitle: "Automatically updated from recent news sources.",
+newsLoading: "Loading latest scam news...",
+newsEmpty: "No recent scam news available right now.",
+readArticle: "Read article",
   },
   ms: {
     home: "Laman Utama",
@@ -78,6 +84,12 @@ close: "Tutup",
 helpful: "Membantu",
 incorrect: "Tidak Tepat",
 checkFeedbackThanks: "✅ Terima kasih! Maklum balas anda telah direkodkan.",
+    news: "Berita Scam",
+newsTitle: "Berita Scam Terkini di Malaysia",
+newsSubtitle: "Dikemas kini secara automatik daripada sumber berita terkini.",
+newsLoading: "Sedang memuatkan berita scam terkini...",
+newsEmpty: "Tiada berita scam terkini buat masa ini.",
+readArticle: "Baca artikel",
   },
   zh: {
     home: "主页",
@@ -117,6 +129,12 @@ close: "关闭",
 helpful: "有帮助",
 incorrect: "不准确",
 checkFeedbackThanks: "✅ 谢谢！你的反馈已记录。",
+    news: "诈骗新闻",
+newsTitle: "马来西亚最新诈骗新闻",
+newsSubtitle: "自动从近期新闻来源更新。",
+newsLoading: "正在加载最新诈骗新闻...",
+newsEmpty: "目前没有最新诈骗新闻。",
+readArticle: "阅读文章",
   }
 };
 
@@ -506,6 +524,8 @@ export default function ScamShield() {
   const [imagePreview, setImagePreview] = useState("");
   const [screenshotFileName, setScreenshotFileName] = useState("");
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxMJhfuI1Dj4OsIk_26YqmGsA1m6pUvWFbIhoBDJ1hN9konv4Q7f-ST6hdo4IS7PprlNQ/exec";
+  const [newsArticles, setNewsArticles] = useState([]);
+  const [newsLoading, setNewsLoading] = useState(false);
 
 useEffect(() => {
   fetch(GOOGLE_SCRIPT_URL)
@@ -515,7 +535,28 @@ useEffect(() => {
     })
     .catch(console.error);
 }, []);
+  
+useEffect(() => {
+  async function loadScamNews() {
+    setNewsLoading(true);
 
+    try {
+      const res = await fetch("/api/scam-news");
+      const data = await res.json();
+
+      if (data.articles) {
+        setNewsArticles(data.articles);
+      }
+    } catch (err) {
+      console.error("Failed to load scam news:", err);
+    }
+
+    setNewsLoading(false);
+  }
+
+  loadScamNews();
+}, []);
+  
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -733,6 +774,19 @@ function reset() {
     📚 {t.learn}
   </button>
 
+  <button
+  onClick={() => setPage("news")}
+  style={{
+    ...navButtonStyle,
+    background:
+      page === "news"
+        ? "linear-gradient(135deg,#00C864,#00A651)"
+        : "rgba(255,255,255,0.06)"
+  }}
+>
+  📰 {t.news}
+</button>
+  
   <button
     onClick={() => {
       setFeedbackSent(false);
@@ -1339,6 +1393,90 @@ function reset() {
           </div>
         </div>
       )}   
+      {page === "news" && (
+  <div style={{ width: "100%", maxWidth: 760, padding: "20px" }}>
+    <div
+      style={{
+        background: "rgba(255,255,255,0.05)",
+        border: "1px solid rgba(255,255,255,0.08)",
+        borderRadius: 22,
+        padding: 26
+      }}
+    >
+      <h2 style={{ color: "#fff", fontSize: 30, marginBottom: 8 }}>
+        📰 {t.newsTitle}
+      </h2>
+
+      <p style={{ color: "#8FA5BC", lineHeight: 1.7, marginBottom: 24 }}>
+        {t.newsSubtitle}
+      </p>
+
+      {newsLoading && (
+        <div style={{ color: "#9AAFC5", fontSize: 13 }}>
+          {t.newsLoading}
+        </div>
+      )}
+
+      {!newsLoading && newsArticles.length === 0 && (
+        <div style={{ color: "#9AAFC5", fontSize: 13 }}>
+          {t.newsEmpty}
+        </div>
+      )}
+
+      {!newsLoading &&
+        newsArticles.map((article, i) => (
+          <a
+            key={i}
+            href={article.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "block",
+              background: "rgba(0,0,0,0.22)",
+              border: "1px solid rgba(255,255,255,0.07)",
+              borderRadius: 14,
+              padding: 14,
+              marginBottom: 10,
+              textDecoration: "none"
+            }}
+          >
+            <div
+              style={{
+                color: "#fff",
+                fontWeight: 800,
+                fontSize: 15,
+                lineHeight: 1.45,
+                marginBottom: 6
+              }}
+            >
+              {article.title}
+            </div>
+
+            <div
+              style={{
+                color: "#9AAFC5",
+                fontSize: 13,
+                lineHeight: 1.6,
+                marginBottom: 8
+              }}
+            >
+              {article.description || t.readArticle}
+            </div>
+
+            <div
+              style={{
+                color: "#00C864",
+                fontSize: 12,
+                fontWeight: 700
+              }}
+            >
+              {article.source} → {t.readArticle}
+            </div>
+          </a>
+        ))}
+    </div>
+  </div>
+)}
             {page === "privacy" && (
         <div style={{ width: "100%", maxWidth: 760, padding: "20px" }}>
           <div style={{
