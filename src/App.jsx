@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const UI_TEXT = {
   en: {
@@ -244,11 +244,21 @@ export default function ScamShield() {
   const [page, setPage] = useState("home");
   const [language, setLanguage] = useState("en");
   const t = UI_TEXT[language] || UI_TEXT.en;
-  const [checkCount, setCheckCount] = useState(() => Number(localStorage.getItem("scamshield_checks") || 0));
+  const [checkCount, setCheckCount] = useState(0);
   const [feedback, setFeedback] = useState("");
   const [feedbackSent, setFeedbackSent] = useState(false);
   const [sendingFeedback, setSendingFeedback] = useState(false);
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxMJhfuI1Dj4OsIk_26YqmGsA1m6pUvWFbIhoBDJ1hN9konv4Q7f-ST6hdo4IS7PprlNQ/exec";
 
+useEffect(() => {
+  fetch(GOOGLE_SCRIPT_URL)
+    .then((res) => res.json())
+    .then((data) => {
+      setCheckCount(data.totalChecks || 0);
+    })
+    .catch(console.error);
+}, []);
+  
   async function analyze() {
     const input = text.trim();
 
@@ -279,11 +289,18 @@ if (!res.ok) {
 
 setResult(data);
 
-      setCheckCount((current) => {
-        const newCount = current + 1;
-        localStorage.setItem("scamshield_checks", newCount);
-        return newCount;
-      });
+      fetch(GOOGLE_SCRIPT_URL, {
+  method: "POST",
+  mode: "no-cors",
+  headers: {
+    "Content-Type": "text/plain"
+  },
+  body: JSON.stringify({
+    action: "increment"
+  })
+});
+
+setCheckCount((current) => current + 1);
     } catch (e) {
       setError("Analysis failed: " + e.message);
     }
