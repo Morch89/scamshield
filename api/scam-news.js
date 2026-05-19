@@ -1,7 +1,37 @@
 import Parser from "rss-parser";
 
 const parser = new Parser();
+function cleanDescription(text, language = "en") {
+  const cleaned = String(text || "")
+    .replace(/<[^>]*>/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 
+  if (!cleaned) {
+    if (language === "zh") {
+      return "点击阅读全文了解更多诈骗相关新闻。";
+    }
+
+    if (language === "ms") {
+      return "Klik untuk membaca artikel penuh berkaitan scam.";
+    }
+
+    return "Read the full article for more details.";
+  }
+
+  // Chinese summarisation
+  if (language === "zh") {
+    return cleaned.slice(0, 70) + (cleaned.length > 70 ? "..." : "");
+  }
+
+  // BM summarisation
+  if (language === "ms") {
+    return cleaned.slice(0, 120) + (cleaned.length > 120 ? "..." : "");
+  }
+
+  // English summarisation
+  return cleaned.slice(0, 140) + (cleaned.length > 140 ? "..." : "");
+}
 export default async function handler(req, res) {
   try {
     const feeds = [
@@ -23,14 +53,27 @@ export default async function handler(req, res) {
         language: "ms"
       },
 
-      // =========================
-      // CHINESE
-      // =========================
-      {
-        url:
-          "https://rsshub.rssforever.com/sinchew/tag/%E8%AF%88%E9%AA%97",
-        language: "zh"
-      }
+// =========================
+// CHINESE - Malaysia via RSSHub mirror
+// =========================
+
+{
+  url: "https://rsshub.rssforever.com/sinchew/tag/%E8%AF%88%E9%AA%97",
+  language: "zh",
+  sourceName: "星洲日报"
+},
+
+{
+  url: "https://rsshub.rssforever.com/sinchew/tag/%E9%AA%97%E5%B1%80",
+  language: "zh",
+  sourceName: "星洲日报"
+},
+
+{
+  url: "https://rsshub.rssforever.com/sinchew/tag/%E6%8A%95%E8%B5%84%E9%AA%97%E5%B1%80",
+  language: "zh",
+  sourceName: "星洲日报"
+}
     ];
 
     const allArticles = [];
@@ -48,18 +91,17 @@ export default async function handler(req, res) {
         const articles = (feed.items || []).map((item) => ({
           title: item.title || "Untitled article",
 
-          description:
-            item.contentSnippet ||
-            item.content ||
-            "Read full article for more details.",
+          description: cleanDescription(
+  item.contentSnippet || item.content,
+  feedInfo.language
+),
 
           url: item.link,
 
           source:
-            item.source?.title ||
-            (feedInfo.language === "zh"
-              ? "Sin Chew"
-              : "Google News"),
+  feedInfo.sourceName ||
+  item.source?.title ||
+  "Google News",
 
           publishedAt: item.pubDate || "",
 
