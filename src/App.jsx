@@ -313,7 +313,7 @@ async function submitFeedback() {
   setSendingFeedback(true);
 
   try {
-    await fetch(https://script.google.com/macros/s/AKfycbxMJhfuI1Dj4OsIk_26YqmGsA1m6pUvWFbIhoBDJ1hN9konv4Q7f-ST6hdo4IS7PprlNQ/exec, {
+    await fetch("https://script.google.com/macros/s/AKfycbxMJhfuI1Dj4OsIk_26YqmGsA1m6pUvWFbIhoBDJ1hN9konv4Q7f-ST6hdo4IS7PprlNQ/exec", {
       method: "POST",
       mode: "no-cors",
       headers: {
