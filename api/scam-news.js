@@ -32,6 +32,42 @@ function cleanDescription(text, language = "en") {
   // English summarisation
   return cleaned.slice(0, 140) + (cleaned.length > 140 ? "..." : "");
 }
+function isMalaysiaRelevantArticle(item, language = "en") {
+  const text = `${item.title || ""} ${item.contentSnippet || ""} ${item.content || ""} ${item.link || ""}`;
+
+  if (language !== "zh") return true;
+
+  const malaysiaSignals = [
+    "马来西亚",
+    "大马",
+    "我国",
+    "全国",
+    "吉隆坡",
+    "雪兰莪",
+    "槟城",
+    "柔佛",
+    "新山",
+    "霹雳",
+    "怡保",
+    "森美兰",
+    "马六甲",
+    "彭亨",
+    "登嘉楼",
+    "吉兰丹",
+    "沙巴",
+    "砂拉越",
+    "令吉",
+    "警方",
+    "商业罪案",
+    "武吉阿曼",
+    "国家银行",
+    "报案",
+    "女会计师",
+    "退休教师"
+  ];
+
+  return malaysiaSignals.some((word) => text.includes(word));
+}
 export default async function handler(req, res) {
   try {
     const feeds = [
@@ -88,25 +124,22 @@ export default async function handler(req, res) {
           feed.items?.length || 0
         );
 
-        const articles = (feed.items || []).map((item) => ({
-          title: item.title || "Untitled article",
-
-          description: cleanDescription(
-  item.contentSnippet || item.content,
-  feedInfo.language
-),
-
-          url: item.link,
-
-          source:
-  feedInfo.sourceName ||
-  item.source?.title ||
-  "Google News",
-
-          publishedAt: item.pubDate || "",
-
-          language: feedInfo.language
-        }));
+        const articles = (feed.items || [])
+  .filter((item) => isMalaysiaRelevantArticle(item, feedInfo.language))
+  .map((item) => ({
+    title: item.title || "Untitled article",
+    description: cleanDescription(
+      item.contentSnippet || item.content,
+      feedInfo.language
+    ),
+    url: item.link,
+    source:
+      feedInfo.sourceName ||
+      item.source?.title ||
+      "Google News",
+    publishedAt: item.pubDate || "",
+    language: feedInfo.language
+  }));
 
         allArticles.push(...articles);
 
