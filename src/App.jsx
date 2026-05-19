@@ -527,7 +527,14 @@ async function analyze() {
       })
     });
 
-    const data = await res.json();
+    const raw = await res.text();
+
+let data;
+try {
+  data = JSON.parse(raw);
+} catch {
+  throw new Error(raw || "Server returned a non-JSON error.");
+}
 
     if (!res.ok) {
       throw new Error(data.error || "Analysis failed.");
@@ -603,7 +610,14 @@ async function analyzeScreenshot(file) {
       })
     });
 
-    const data = await res.json();
+    const raw = await res.text();
+
+let data;
+try {
+  data = JSON.parse(raw);
+} catch {
+  throw new Error(raw || "Server returned a non-JSON error.");
+}
 
     if (!res.ok) {
       throw new Error(data.error || "Screenshot analysis failed.");
