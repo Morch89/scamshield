@@ -541,14 +541,7 @@ try {
     }
 
     setResult(data);
-
-    recordCheck({
-      language,
-      text: input,
-      verdict: data.verdict,
-      riskScore: data.riskScore,
-      scamType: data.scamType
-    });
+setCheckCount((current) => current + 1);
   } catch (e) {
     setError("Analysis failed: " + e.message);
   }
@@ -624,14 +617,7 @@ try {
     }
 
     setResult(data);
-
-    recordCheck({
-      language,
-      text: "[Screenshot uploaded: " + file.name + "]",
-      verdict: data.verdict,
-      riskScore: data.riskScore,
-      scamType: data.scamType
-    });
+    setCheckCount((current) => current + 1);
   } catch (e) {
     setError("Analysis failed: " + e.message);
   }
