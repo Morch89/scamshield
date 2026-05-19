@@ -699,7 +699,7 @@ function reset() {
   }}
 >
   {/* LEFT SIDE */}
-  <div
+<div
   style={{
     display: "flex",
     alignItems: "stretch",
@@ -707,125 +707,60 @@ function reset() {
     flexWrap: "wrap"
   }}
 >
-    <button
-      onClick={() => setPage("home")}
-      style={{
-  ...navButtonStyle,
-  background:
-    page === "home"
-      ? "linear-gradient(135deg,#00C864,#00A651)"
-      : "rgba(255,255,255,0.06)"
-}}
-  color: "#fff",
-  border: "1px solid rgba(255,255,255,0.08)",
-  padding: "10px 16px",
-  borderRadius: 12,
-  fontWeight: 700,
-  cursor: "pointer",
-  fontSize: 13,
-  minHeight: 44,
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  lineHeight: 1.15,
-  textAlign: "center",
-  whiteSpace: "normal"
-}}
-    >
-      🛡️ {t.home}
-    </button>
+  <button
+    onClick={() => setPage("home")}
+    style={{
+      ...navButtonStyle,
+      background:
+        page === "home"
+          ? "linear-gradient(135deg,#00C864,#00A651)"
+          : "rgba(255,255,255,0.06)"
+    }}
+  >
+    🛡️ {t.home}
+  </button>
 
-    <button
-      onClick={() => setPage("learn")}
-      style={{
-  ...navButtonStyle,
-  background:
-    page === "home"
-      ? "linear-gradient(135deg,#00C864,#00A651)"
-      : "rgba(255,255,255,0.06)"
-}}
-  color: "#fff",
-  border: "1px solid rgba(255,255,255,0.08)",
-  padding: "10px 16px",
-  borderRadius: 12,
-  fontWeight: 700,
-  cursor: "pointer",
-  fontSize: 13,
-  minHeight: 44,
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  lineHeight: 1.15,
-  textAlign: "center",
-  whiteSpace: "normal"
-}}
-    >
-      📚 {t.learn}
-    </button>
+  <button
+    onClick={() => setPage("learn")}
+    style={{
+      ...navButtonStyle,
+      background:
+        page === "learn"
+          ? "linear-gradient(135deg,#00C864,#00A651)"
+          : "rgba(255,255,255,0.06)"
+    }}
+  >
+    📚 {t.learn}
+  </button>
 
-   <button
-  onClick={() => {
-    setFeedbackSent(false);
-    setFeedback("");
-    setShowFeedbackForm(true);
-  }}
-  style={{
-  ...navButtonStyle,
-  background:
-    page === "home"
-      ? "linear-gradient(135deg,#00C864,#00A651)"
-      : "rgba(255,255,255,0.06)"
-}}
-  color: "#fff",
-  border: "1px solid rgba(255,255,255,0.08)",
-  padding: "10px 16px",
-  borderRadius: 12,
-  fontWeight: 700,
-  cursor: "pointer",
-  fontSize: 13,
-  minHeight: 44,
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  lineHeight: 1.15,
-  textAlign: "center",
-  whiteSpace: "normal"
-}}
->
-  💬 {t.feedbackMenu}
-</button>
+  <button
+    onClick={() => {
+      setFeedbackSent(false);
+      setFeedback("");
+      setShowFeedbackForm(true);
+    }}
+    style={{
+      ...navButtonStyle,
+      background: "rgba(255,255,255,0.06)"
+    }}
+  >
+    💬 {t.feedbackMenu}
+  </button>
 
-<a
-  href="https://t.me/ScamShieldMalaysiaBot"
-  target="_blank"
-  rel="noopener noreferrer"
-  style={{
-  ...navButtonStyle,
-  background:
-    page === "home"
-      ? "linear-gradient(135deg,#00C864,#00A651)"
-      : "rgba(255,255,255,0.06)"
-}}
-  color: "#fff",
-  border: "1px solid rgba(255,255,255,0.08)",
-  padding: "10px 16px",
-  borderRadius: 12,
-  fontWeight: 700,
-  cursor: "pointer",
-  fontSize: 13,
-  minHeight: 44,
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  lineHeight: 1.15,
-  textAlign: "center",
-  whiteSpace: "normal"
-}}
->
-  ✈️ Telegram Bot
-</a>
-
-  </div>
+  <a
+    href="https://t.me/ScamShieldMalaysiaBot"
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{
+      ...navButtonStyle,
+      background: "linear-gradient(135deg,#229ED9,#1B8BC3)",
+      textDecoration: "none",
+      whiteSpace: "nowrap"
+    }}
+  >
+    ✈️ Telegram Bot
+  </a>
+</div>
 
   {/* RIGHT SIDE */}
   <select
