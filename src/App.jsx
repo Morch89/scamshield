@@ -13,6 +13,9 @@ const UI_TEXT = {
     counter: "Scam checks performed",
     privacy: "Privacy Policy",
     disclaimer: "Disclaimer"
+    educationTitle: "Scam Education Centre",
+    educationSubtitle: "Learn about common scams affecting Malaysians.",
+    example: "Example:"
   },
   ms: {
     home: "Laman Utama",
@@ -26,6 +29,9 @@ const UI_TEXT = {
     counter: "Semakan scam dibuat",
     privacy: "Polisi Privasi",
     disclaimer: "Penafian"
+    educationTitle: "Pusat Pendidikan Scam",
+    educationSubtitle: "Ketahui jenis scam biasa yang menyasarkan rakyat Malaysia.",
+    example: "Contoh:"
   },
   zh: {
     home: "主页",
@@ -39,6 +45,9 @@ const UI_TEXT = {
     counter: "已完成诈骗检查",
     privacy: "隐私政策",
     disclaimer: "免责声明"
+    educationTitle: "诈骗教育中心",
+    educationSubtitle: "了解常见的马来西亚诈骗类型。",
+    example: "例子："
   }
 };
 
@@ -71,7 +80,8 @@ const footerButtonStyle = {
   textDecoration: "none"
 };
 
-const SCAM_TYPES = [
+const SCAM_TYPES = {
+  en: [
   {
     title: "💰 Fake Investment Schemes",
     desc: "Fake investment scams are among the most financially damaging scams in Malaysia. Scammers typically present themselves as experienced investment advisors, cryptocurrency experts, forex traders, or representatives of well-known financial companies. Victims are promised unusually high returns within a very short period of time, often with little or no risk involved. These scams commonly spread through WhatsApp groups, Telegram channels, Facebook advertisements, TikTok videos, and fake investment websites.\n\nScammers often use fabricated trading dashboards, fake profit screenshots, manipulated testimonials, and even impersonations of celebrities or public figures to appear legitimate. Victims may initially receive small ‘profits’ to build trust before being encouraged to invest larger amounts. Once significant funds are transferred, withdrawals become impossible, additional payments are demanded, or the scammers disappear entirely.\n\nMany of these operations are not licensed by financial authorities and victims usually have little chance of recovering their money after transfers are made.",
@@ -147,7 +157,74 @@ const SCAM_TYPES = [
     desc: "Fake ticket scams involve the sale of non-existent or invalid tickets for concerts, sporting events, theme parks, flights, or popular entertainment events through social media platforms and messaging applications.\n\nScammers usually claim they have limited tickets available at discounted prices or urgent last-minute sales. Victims are encouraged to make fast bank transfers to secure the tickets before they are supposedly sold out.\n\nAfter payment is made, victims either receive fake tickets, duplicated tickets that cannot be used, or nothing at all. The scammers typically disappear or block further communication immediately after receiving payment.",
     example: "Taylor Swift VIP tickets available cheap. Limited quantity, bank transfer only."
   }
-];
+  ],
+
+  ms: [
+    {
+      title: "💰 Skim Pelaburan Palsu",
+      desc: "Skim pelaburan palsu biasanya menjanjikan pulangan yang sangat tinggi dalam masa yang singkat. Scammer sering menyamar sebagai penasihat pelaburan, pakar kripto, pedagang forex atau wakil syarikat kewangan yang kelihatan sah.\n\nMereka mungkin menggunakan tangkap layar keuntungan palsu, testimoni rekaan, laman web profesional dan kumpulan WhatsApp atau Telegram untuk membina kepercayaan. Mangsa kadang-kadang diberi keuntungan kecil pada awalnya supaya lebih yakin untuk melabur jumlah yang lebih besar.\n\nSelepas wang dipindahkan, pengeluaran biasanya menjadi mustahil, bayaran tambahan diminta, atau scammer terus hilang.",
+      example: "Jana RM15,000 dalam 7 hari melalui platform dagangan kripto AI kami. Slot terhad."
+    },
+    {
+      title: "👮 Macau Scam",
+      desc: "Macau scam berlaku apabila scammer menyamar sebagai polis, pegawai Bank Negara Malaysia, kastam, mahkamah atau syarikat kurier. Mangsa biasanya dituduh terlibat dalam jenayah seperti pengubahan wang haram, kes dadah, cukai tertunggak atau transaksi mencurigakan.\n\nScammer menggunakan ugutan, tekanan dan rasa takut untuk memaksa mangsa bertindak segera. Mangsa juga sering diberitahu supaya tidak memaklumkan sesiapa kerana kononnya kes itu sulit.\n\nAkhirnya, mangsa diarahkan memindahkan wang ke akaun 'selamat' untuk siasatan. Sebenarnya, akaun itu dikawal oleh scammer.",
+      example: "Akaun bank anda dikaitkan dengan aktiviti pengubahan wang haram. Pindahkan wang anda sekarang untuk siasatan."
+    },
+    {
+      title: "📱 Scam SMS & Emel Phishing",
+      desc: "Scam phishing cuba mencuri maklumat sensitif seperti nama pengguna perbankan, kata laluan, OTP, maklumat kad atau butiran identiti melalui SMS atau emel palsu.\n\nMesej ini biasanya kelihatan seperti datang daripada bank, syarikat kurier, e-wallet, agensi kerajaan atau platform dalam talian. Mangsa diarahkan ke laman web palsu yang menyerupai laman rasmi.\n\nApabila mangsa memasukkan maklumat, scammer boleh mengakses akaun bank, meluluskan transaksi atau mencuri identiti.",
+      example: "Akaun CIMB anda telah digantung. Sahkan segera di cimb-secure-login.com"
+    },
+    {
+      title: "💳 Scam Pinjaman Tidak Wujud",
+      desc: "Scam ini menyasarkan individu yang memerlukan wang segera, terutamanya mereka yang sukar mendapat pinjaman bank. Scammer menawarkan pinjaman mudah lulus dengan kadar faedah rendah dan syarat minimum.\n\nMangsa diberitahu pinjaman telah diluluskan, tetapi perlu membayar yuran pemprosesan, insurans, duti setem atau deposit keselamatan sebelum wang dilepaskan.\n\nSelepas bayaran dibuat, pinjaman tidak diberikan dan scammer biasanya menghilangkan diri atau meminta bayaran tambahan.",
+      example: "Pinjaman RM50,000 anda telah diluluskan. Sila bayar RM800 yuran pemprosesan untuk pelepasan dana."
+    },
+    {
+      title: "❤️ Love Scam",
+      desc: "Love scam berlaku apabila scammer membina hubungan romantik palsu melalui aplikasi dating atau media sosial. Mereka mengambil masa berminggu-minggu atau berbulan-bulan untuk membina kepercayaan emosi.\n\nSelepas mangsa percaya hubungan itu benar, scammer mencipta kecemasan palsu seperti kos perubatan, masalah perniagaan, tiket penerbangan atau bungkusan hadiah yang ditahan kastam.\n\nMangsa dimanipulasi secara emosi untuk menghantar wang berulang kali kerana percaya sedang membantu seseorang yang disayangi.",
+      example: "Saya perlukan bantuan bayar caj kastam supaya hadiah dan wang tunai boleh dihantar kepada awak."
+    },
+    {
+      title: "💼 Scam Kerja Palsu",
+      desc: "Scam kerja palsu menawarkan kerja dari rumah, tugasan mudah atau pendapatan tinggi dengan kelayakan minimum. Ia sering menyasarkan pelajar, pencari kerja dan mereka yang mahu pendapatan tambahan.\n\nMangsa mungkin diminta membayar yuran pendaftaran, latihan, deposit atau modal untuk membuka tugasan yang lebih tinggi.\n\nAda scam yang membayar jumlah kecil pada awalnya untuk membina kepercayaan sebelum meminta deposit lebih besar. Selepas itu, akaun dibekukan atau scammer menghilangkan diri.",
+      example: "Jana RM300 sehari dari rumah dengan tugasan mudah. Kekosongan terhad."
+    }
+  ],
+
+  zh: [
+    {
+      title: "💰 虚假投资骗局",
+      desc: "虚假投资骗局通常承诺在短时间内获得非常高的回报，而且声称风险很低或没有风险。骗子常伪装成投资顾问、加密货币专家、外汇交易员，或看似正规的金融公司代表。\n\n他们可能使用伪造的盈利截图、虚假见证、专业网站、WhatsApp 群组或 Telegram 群组来建立信任。有些受害者一开始会收到小额“盈利”，因此更容易相信并投入更大金额。\n\n当资金转入后，受害者通常无法提款，骗子会继续要求支付额外费用，或直接消失。",
+      example: "使用我们的 AI 加密货币交易平台，7 天内赚取 RM15,000。名额有限。"
+    },
+    {
+      title: "👮 澳门骗局",
+      desc: "澳门骗局是指骗子冒充警察、国家银行官员、海关、法院或快递公司，声称受害者的银行账户、电话号码或身份涉及洗黑钱、毒品、逃税或非法交易。\n\n骗子通常会制造恐惧和紧迫感，要求受害者立即配合，并声称案件保密，不能告诉家人或朋友。他们有时会把电话转接给不同的假部门，让骗局看起来更真实。\n\n最后，受害者会被要求把钱转入所谓的“安全账户”进行调查。实际上，这些账户由骗子控制。",
+      example: "您的银行账户涉及洗黑钱活动。请立即转移资金以配合调查。"
+    },
+    {
+      title: "📱 短信与电邮钓鱼骗局",
+      desc: "钓鱼骗局通过假短信或假电邮，试图盗取银行用户名、密码、OTP、信用卡资料或身份资料。这些信息通常伪装成来自银行、快递公司、电子钱包、政府机构或线上平台。\n\n受害者会被引导到看似官方网站的假登录页面。骗子常用账户被冻结、可疑交易、包裹失败、退款或安全验证等理由制造紧迫感。\n\n一旦受害者输入资料，骗子就可能登入银行账户、批准交易或盗用身份。",
+      example: "您的 CIMB 账户已被暂停。请立即到 cimb-secure-login.com 验证。"
+    },
+    {
+      title: "💳 不存在的贷款骗局",
+      desc: "这类骗局主要针对急需资金的人，尤其是信用记录较差或难以获得银行贷款的人。骗子会宣传快速批准、低利息和少文件要求的贷款。\n\n受害者会被告知贷款已经批准，但必须先支付处理费、保险费、印花税或保证金，贷款才能发放。\n\n付款后，贷款并不会到账，骗子可能继续要求更多费用，或直接失联。",
+      example: "您的 RM50,000 贷款已批准。请先支付 RM800 处理费以释放款项。"
+    },
+    {
+      title: "❤️ 爱情骗局",
+      desc: "爱情骗局通常发生在交友软件、Facebook、Instagram 或其他社交平台。骗子会建立虚假的恋爱关系，并花几周甚至几个月来赢得受害者的信任。\n\n建立感情后，骗子会制造医疗费、商业问题、旅行费用、海关费或家庭紧急情况等借口，要求受害者汇款。\n\n有些骗子也会声称寄送贵重礼物或现金包裹，但包裹被海关扣留，需要受害者支付费用。受害者因为情感投入，往往会多次汇款。",
+      example: "我需要帮忙支付海关费，礼物和现金包裹才能寄给你。"
+    },
+    {
+      title: "💼 假招聘骗局",
+      desc: "假招聘骗局通常宣传高薪在家工作、简单线上任务或无需经验的职位。这类骗局常针对学生、失业人士和想赚取额外收入的人。\n\n受害者可能被要求支付注册费、培训费、押金，或先购买工具包才能开始工作。有些骗局一开始会支付小额佣金，让受害者相信工作真实。\n\n之后，骗子会要求受害者投入更多资金，或声称需要解锁更高等级任务。最终受害者无法提款，或骗子直接消失。",
+      example: "在家完成简单任务，每天可赚 RM300。名额有限。"
+    }
+  ]
+};
 
 function createDemoResult(input) {
   const lower = input.toLowerCase();
@@ -639,13 +716,15 @@ async function submitFeedback() {
       {page === "learn" && (
         <div style={{ width: "100%", maxWidth: 760, padding: "20px" }}>
           <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 22, padding: 26 }}>
-            <h2 style={{ color: "#fff", fontSize: 30, marginBottom: 8 }}>📚 Scam Education Centre</h2>
+            <h2 style={{ color: "#fff", fontSize: 30, marginBottom: 8 }}>
+  📚 {t.educationTitle}
+</h2>
 
-            <p style={{ color: "#8FA5BC", lineHeight: 1.7, marginBottom: 24 }}>
-              Learn about common scams affecting Malaysians.
-            </p>
+<p style={{ color: "#8FA5BC", lineHeight: 1.7, marginBottom: 24 }}>
+  {t.educationSubtitle}
+</p>
 
-            {SCAM_TYPES.map((item, i) => (
+           {(SCAM_TYPES[language] || SCAM_TYPES.en).map((item, i) => (
               <details key={i} style={detailBoxStyle}>
                 <summary style={{ color: "#fff", fontWeight: 800, cursor: "pointer", fontSize: 16 }}>
                   {item.title}
@@ -656,7 +735,7 @@ async function submitFeedback() {
                     <p key={pIndex}>{paragraph}</p>
                   ))}
 
-                  <strong style={{ color: "#fff" }}>Example:</strong>
+                  <strong style={{ color: "#fff" }}>{t.example}</strong>
 
                   <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 12, padding: 12, marginTop: 8, color: "#E5E5EA" }}>
                     “{item.example}”
