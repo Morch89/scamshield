@@ -12,7 +12,7 @@ const UI_TEXT = {
     analysing: "Analysing...",
     counter: "Scam checks performed",
     privacy: "Privacy Policy",
-    disclaimer: "Disclaimer"
+    disclaimer: "Disclaimer",
     educationTitle: "Scam Education Centre",
     educationSubtitle: "Learn about common scams affecting Malaysians.",
     example: "Example:"
@@ -28,7 +28,7 @@ const UI_TEXT = {
     analysing: "Sedang menganalisis...",
     counter: "Semakan scam dibuat",
     privacy: "Polisi Privasi",
-    disclaimer: "Penafian"
+    disclaimer: "Penafian",
     educationTitle: "Pusat Pendidikan Scam",
     educationSubtitle: "Ketahui jenis scam biasa yang menyasarkan rakyat Malaysia.",
     example: "Contoh:"
@@ -44,7 +44,7 @@ const UI_TEXT = {
     analysing: "分析中...",
     counter: "已完成诈骗检查",
     privacy: "隐私政策",
-    disclaimer: "免责声明"
+    disclaimer: "免责声明",
     educationTitle: "诈骗教育中心",
     educationSubtitle: "了解常见的马来西亚诈骗类型。",
     example: "例子："
