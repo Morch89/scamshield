@@ -29,9 +29,6 @@ step2Desc: "Check for scam warning signs.",
 
 step3Title: "Act",
 step3Desc: "Get clear next steps.",
-    uploadScreenshot: "Upload scam screenshot",
-imageWarning: "Screenshot analysis is experimental. Clear images work best. Blurry, cropped or low-quality screenshots may produce inaccurate results. For best accuracy, paste the message text if possible.",
-uploaded: "Uploaded:",
   },
   ms: {
     home: "Laman Utama",
@@ -61,9 +58,6 @@ step2Desc: "Semak tanda amaran scam.",
 
 step3Title: "Bertindak",
 step3Desc: "Dapatkan langkah seterusnya.",
-    uploadScreenshot: "Muat naik tangkap layar scam",
-imageWarning: "Analisis tangkap layar masih dalam peringkat eksperimen. Imej yang jelas memberikan hasil terbaik. Tangkap layar yang kabur, terpotong atau berkualiti rendah mungkin menghasilkan keputusan yang kurang tepat. Untuk ketepatan terbaik, tampal teks mesej jika boleh.",
-uploaded: "Dimuat naik:",
   },
   zh: {
     home: "主页",
@@ -93,9 +87,6 @@ step2Desc: "检查诈骗风险迹象。",
 
 step3Title: "行动",
 step3Desc: "获取清晰的下一步建议。",
-    uploadScreenshot: "上传诈骗截图",
-imageWarning: "截图分析仍处于实验阶段。清晰图片效果最好。模糊、裁剪不完整或低质量截图可能导致结果不准确。为了获得更准确的结果，建议尽量粘贴信息文字。",
-uploaded: "已上传：",
   }
 };
 
@@ -475,97 +466,107 @@ useEffect(() => {
     })
     .catch(console.error);
 }, []);
-  function fileToBase64(file) {
+
+function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-
     reader.onload = () => resolve(reader.result);
     reader.onerror = reject;
-
     reader.readAsDataURL(file);
   });
 }
-  async function analyze() {
-    const input = text.trim();
 
-    if (!input) {
-      setError("Please paste a suspicious message or URL first.");
-      return;
-    }
-
-    setLoading(true);
-    setResult(null);
-    setError("");
-
-    try {
-      const res = await fetch("/api/check-scam", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-  text: input,
-  language
-})
-});
-
-const data = await res.json();
-
-if (!res.ok) {
-  throw new Error(data.error || "Analysis failed.");
+async function postToGoogleSheet(payload) {
+  return fetch(GOOGLE_SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "text/plain"
+    },
+    body: JSON.stringify(payload)
+  });
 }
 
-setResult(data);
+async function recordCheck({ language, text, verdict, riskScore, scamType }) {
+  await postToGoogleSheet({ action: "increment" });
 
-      fetch(GOOGLE_SCRIPT_URL, {
-  method: "POST",
-  mode: "no-cors",
-  headers: {
-    "Content-Type": "text/plain"
-  },
-  body: JSON.stringify({
+  await postToGoogleSheet({
     action: "logCheck",
     language,
-    text: input,
-    verdict: data.verdict,
-    riskScore: data.riskScore,
-    scamType: data.scamType
-  })
-});
+    text,
+    verdict,
+    riskScore,
+    scamType
+  });
 
-setCheckCount((current) => current + 1);
-    } catch (e) {
-      setError("Analysis failed: " + e.message);
+  setCheckCount((current) => current + 1);
+}
+
+async function analyze() {
+  const input = text.trim();
+
+  if (!input) {
+    setError("Please paste a suspicious message or URL first.");
+    return;
+  }
+
+  setLoading(true);
+  setResult(null);
+  setError("");
+
+  try {
+    const res = await fetch("/api/check-scam", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        text: input,
+        language
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Analysis failed.");
     }
 
-    setLoading(false);
+    setResult(data);
+
+    recordCheck({
+      language,
+      text: input,
+      verdict: data.verdict,
+      riskScore: data.riskScore,
+      scamType: data.scamType
+    });
+  } catch (e) {
+    setError("Analysis failed: " + e.message);
   }
+
+  setLoading(false);
+}
+
 async function submitFeedback() {
   if (!feedback.trim()) return;
 
   setSendingFeedback(true);
 
   try {
-    await fetch("https://script.google.com/macros/s/AKfycbxMJhfuI1Dj4OsIk_26YqmGsA1m6pUvWFbIhoBDJ1hN9konv4Q7f-ST6hdo4IS7PprlNQ/exec", {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "text/plain"
-      },
-      body: JSON.stringify({
-        action: "feedback",
-        feedback
-      })
+    await postToGoogleSheet({
+      action: "feedback",
+      feedback
     });
 
     setFeedback("");
     setFeedbackSent(true);
-
   } catch (err) {
     alert("Failed to send feedback.");
   }
 
   setSendingFeedback(false);
 }
-  async function analyzeScreenshot(file) {
+
+async function analyzeScreenshot(file) {
   if (!file) return;
 
   if (!file.type.startsWith("image/")) {
@@ -607,37 +608,27 @@ async function submitFeedback() {
 
     setResult(data);
 
-    fetch(GOOGLE_SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "text/plain"
-      },
-      body: JSON.stringify({
-        action: "logCheck",
-        language,
-        text: "[Screenshot uploaded: " + file.name + "]",
-        verdict: data.verdict,
-        riskScore: data.riskScore,
-        scamType: data.scamType
-      })
+    recordCheck({
+      language,
+      text: "[Screenshot uploaded: " + file.name + "]",
+      verdict: data.verdict,
+      riskScore: data.riskScore,
+      scamType: data.scamType
     });
-
-    setCheckCount((current) => current + 1);
   } catch (e) {
     setError("Analysis failed: " + e.message);
   }
 
   setLoading(false);
 }
-  function reset() {
+
+function reset() {
   setResult(null);
   setText("");
   setError("");
   setImagePreview("");
   setScreenshotFileName("");
 }
-  
 
   const v = result ? VERDICTS[result.verdict] || VERDICTS["LOOKS SAFE"] : null;
 
@@ -847,7 +838,7 @@ async function submitFeedback() {
       background: "rgba(0,200,100,0.06)"
     }}
   >
-    📷 {t.uploadScreenshot}
+    📷 Upload scam screenshot
     <input
       type="file"
       accept="image/*"
@@ -857,24 +848,9 @@ async function submitFeedback() {
   </label>
 </div>
 
-<div
-  style={{
-    marginTop: 10,
-    background: "rgba(255,149,0,0.08)",
-    border: "1px solid rgba(255,149,0,0.2)",
-    color: "#FFD9A0",
-    borderRadius: 12,
-    padding: "10px 12px",
-    fontSize: 11,
-    lineHeight: 1.55
-  }}
->
-  ⚠️ {t.imageWarning}
-</div>
-
 {imagePreview && !result && (
   <div style={{ marginTop: 12, color: "#7A8FA6", fontSize: 12 }}>
-    {t.uploaded} {screenshotFileName}
+    Uploaded: {screenshotFileName}
   </div>
 )}
               {error && (
