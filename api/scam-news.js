@@ -5,24 +5,51 @@ const parser = new Parser();
 export default async function handler(req, res) {
   try {
 const feeds = [
+  // =========================
+  // ENGLISH - Malaysia
+  // =========================
+
   {
     url:
-      "https://news.google.com/rss/search?q=Malaysia+scam+OR+fraud+OR+phishing&hl=en-MY&gl=MY&ceid=MY:en",
+      "https://news.google.com/rss/search?q=(site:thestar.com.my+OR+site:nst.com.my+OR+site:freemalaysiatoday.com+OR+site:malaymail.com)+scam+OR+fraud+OR+phishing&hl=en-MY&gl=MY&ceid=MY:en",
     language: "en"
   },
+
   {
     url:
-      "https://news.google.com/rss/search?q=Malaysia+scam+OR+penipuan+OR+phishing&hl=ms&gl=MY&ceid=MY:ms",
+      "https://news.google.com/rss/search?q=(site:thestar.com.my+OR+site:nst.com.my)+online+scam+OR+Macau+scam+OR+bank+scam&hl=en-MY&gl=MY&ceid=MY:en",
+    language: "en"
+  },
+
+  // =========================
+  // BAHASA MELAYU - Malaysia
+  // =========================
+
+  {
+    url:
+      "https://news.google.com/rss/search?q=(site:hmetro.com.my+OR+site:bharian.com.my+OR+site:sinarharian.com.my+OR+site:kosmo.com.my)+penipuan+OR+scam+OR+phishing&hl=ms&gl=MY&ceid=MY:ms",
     language: "ms"
   },
+
   {
     url:
-      "https://news.google.com/rss/search?q=马来西亚+诈骗+OR+骗局+OR+网络诈骗+OR+钓鱼诈骗&hl=zh-CN&gl=MY&ceid=MY:zh-CN",
+      "https://news.google.com/rss/search?q=(site:hmetro.com.my+OR+site:sinarharian.com.my)+penipuan+dalam+talian+OR+scam+bank+OR+penipuan+parcel&hl=ms&gl=MY&ceid=MY:ms",
+    language: "ms"
+  },
+
+  // =========================
+  // CHINESE - Malaysia
+  // =========================
+
+  {
+    url:
+      "https://news.google.com/rss/search?q=(site:orientaldaily.com.my+OR+site:sinchew.com.my+OR+site:chinapress.com.my)+诈骗+OR+骗局+OR+网络诈骗&hl=zh-CN&gl=MY&ceid=MY:zh-CN",
     language: "zh"
   },
+
   {
     url:
-      "https://news.google.com/rss/search?q=Malaysia+诈骗+OR+骗局+OR+网络诈骗+OR+钓鱼诈骗&hl=zh-CN&gl=MY&ceid=MY:en",
+      "https://news.google.com/rss/search?q=(site:orientaldaily.com.my+OR+site:nanyang.com.my)+钓鱼诈骗+OR+银行诈骗+OR+包裹诈骗&hl=zh-CN&gl=MY&ceid=MY:zh-CN",
     language: "zh"
   }
 ];
