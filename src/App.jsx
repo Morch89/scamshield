@@ -682,22 +682,33 @@ function reset() {
   }}
 >
   {/* LEFT SIDE */}
-  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+  <div
+  style={{
+    display: "flex",
+    alignItems: "stretch",
+    gap: 10,
+    flexWrap: "wrap"
+  }}
+>
     <button
       onClick={() => setPage("home")}
       style={{
-        background:
-          page === "home"
-            ? "linear-gradient(135deg,#00C864,#009950)"
-            : "rgba(255,255,255,0.06)",
-        color: "#fff",
-        border: "1px solid rgba(255,255,255,0.08)",
-        padding: "10px 16px",
-        borderRadius: 12,
-        fontWeight: 700,
-        cursor: "pointer",
-        fontSize: 13
-      }}
+  background: "...",
+  color: "#fff",
+  border: "1px solid rgba(255,255,255,0.08)",
+  padding: "10px 16px",
+  borderRadius: 12,
+  fontWeight: 700,
+  cursor: "pointer",
+  fontSize: 13,
+  minHeight: 44,
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  lineHeight: 1.15,
+  textAlign: "center",
+  whiteSpace: "normal"
+}}
     >
       🛡️ {t.home}
     </button>
@@ -705,18 +716,22 @@ function reset() {
     <button
       onClick={() => setPage("learn")}
       style={{
-        background:
-          page === "learn"
-            ? "linear-gradient(135deg,#00C864,#009950)"
-            : "rgba(255,255,255,0.06)",
-        color: "#fff",
-        border: "1px solid rgba(255,255,255,0.08)",
-        padding: "10px 16px",
-        borderRadius: 12,
-        fontWeight: 700,
-        cursor: "pointer",
-        fontSize: 13
-      }}
+  background: "...",
+  color: "#fff",
+  border: "1px solid rgba(255,255,255,0.08)",
+  padding: "10px 16px",
+  borderRadius: 12,
+  fontWeight: 700,
+  cursor: "pointer",
+  fontSize: 13,
+  minHeight: 44,
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  lineHeight: 1.15,
+  textAlign: "center",
+  whiteSpace: "normal"
+}}
     >
       📚 {t.learn}
     </button>
@@ -728,15 +743,22 @@ function reset() {
     setShowFeedbackForm(true);
   }}
   style={{
-    background: "rgba(255,255,255,0.06)",
-    color: "#fff",
-    border: "1px solid rgba(255,255,255,0.08)",
-    padding: "10px 16px",
-    borderRadius: 12,
-    fontWeight: 700,
-    cursor: "pointer",
-    fontSize: 13
-  }}
+  background: "...",
+  color: "#fff",
+  border: "1px solid rgba(255,255,255,0.08)",
+  padding: "10px 16px",
+  borderRadius: 12,
+  fontWeight: 700,
+  cursor: "pointer",
+  fontSize: 13,
+  minHeight: 44,
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  lineHeight: 1.15,
+  textAlign: "center",
+  whiteSpace: "normal"
+}}
 >
   💬 {t.feedbackMenu}
 </button>
@@ -746,22 +768,22 @@ function reset() {
   target="_blank"
   rel="noopener noreferrer"
   style={{
-    background: "linear-gradient(135deg,#229ED9,#1B8BC3)",
-    color: "#fff",
-    border: "1px solid rgba(255,255,255,0.08)",
-    padding: "10px 16px",
-    borderRadius: 12,
-    fontWeight: 700,
-    cursor: "pointer",
-    fontSize: 13,
-    textDecoration: "none",
-    display: "inline-flex",
-    alignItems: "center",
-    gap: 6,
-    minWidth: 0,
-    whiteSpace: "nowrap",
-    lineHeight: 1.2
-  }}
+  background: "...",
+  color: "#fff",
+  border: "1px solid rgba(255,255,255,0.08)",
+  padding: "10px 16px",
+  borderRadius: 12,
+  fontWeight: 700,
+  cursor: "pointer",
+  fontSize: 13,
+  minHeight: 44,
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  lineHeight: 1.15,
+  textAlign: "center",
+  whiteSpace: "normal"
+}}
 >
   ✈️ Telegram Bot
 </a>
