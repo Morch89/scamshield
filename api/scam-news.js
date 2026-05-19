@@ -25,26 +25,65 @@ export default async function handler(req, res) {
           "https://news.google.com/rss/search?q=penipuan+dalam+talian+OR+scam+bank+OR+penipuan+parcel&hl=ms&gl=MY&ceid=MY:ms",
         language: "ms"
       },
-      {
-        url:
-          `https://news.google.com/rss/search?q=${encodeURIComponent("site:orientaldaily.com.my 诈骗")}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
-        language: "zh"
-      },
-      {
-        url:
-          `https://news.google.com/rss/search?q=${encodeURIComponent("site:sinchew.com.my 诈骗")}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
-        language: "zh"
-      },
-      {
-        url:
-          `https://news.google.com/rss/search?q=${encodeURIComponent("site:chinapress.com.my 诈骗")}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
-        language: "zh"
-      },
-      {
-        url:
-          `https://news.google.com/rss/search?q=${encodeURIComponent("马来西亚 诈骗 OR 骗局 OR 投资骗局 OR 网络诈骗")}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
-        language: "zh"
-      }
+// =========================
+// CHINESE - Malaysia
+// =========================
+
+{
+  url:
+    `https://news.google.com/rss/search?q=${encodeURIComponent(
+      "马来西亚 诈骗"
+    )}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
+  language: "zh"
+},
+
+{
+  url:
+    `https://news.google.com/rss/search?q=${encodeURIComponent(
+      "大马 诈骗"
+    )}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
+  language: "zh"
+},
+
+{
+  url:
+    `https://news.google.com/rss/search?q=${encodeURIComponent(
+      "投资骗局 马来西亚"
+    )}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
+  language: "zh"
+},
+
+{
+  url:
+    `https://news.google.com/rss/search?q=${encodeURIComponent(
+      "线上投资诈骗 马来西亚"
+    )}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
+  language: "zh"
+},
+
+{
+  url:
+    `https://news.google.com/rss/search?q=${encodeURIComponent(
+      "中国报 诈骗"
+    )}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
+  language: "zh"
+},
+
+{
+  url:
+    `https://news.google.com/rss/search?q=${encodeURIComponent(
+      "东方日报 诈骗"
+    )}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
+  language: "zh"
+},
+
+{
+  url:
+    `https://news.google.com/rss/search?q=${encodeURIComponent(
+      "星洲日报 诈骗"
+    )}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
+  language: "zh"
+}
     ];
 
     const allArticles = [];
