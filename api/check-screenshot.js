@@ -197,20 +197,23 @@ try {
     },
     body: JSON.stringify({
       timestamp: new Date().toISOString(),
-      source: req.body.source || "website",
+      source: req.body.source || "screenshot",
       language,
-      input: text || ocrData?.extractedText || null,
-      verdict: parsed.verdict,
-      riskScore: parsed.riskScore,
-      confidence: parsed.confidence || null,
-      scamType: parsed.scamType || null,
-      scamFamily: parsed.scamFamily || null,
-      targetBrand: parsed.targetBrand || null,
-      userRisk: parsed.userRisk || null
+
+      input: ocrData?.extractedText || null,
+
+      verdict: scamData.verdict,
+      riskScore: scamData.riskScore,
+      confidence: scamData.confidence || null,
+
+      scamType: scamData.scamType || null,
+      scamFamily: scamData.scamFamily || null,
+      targetBrand: scamData.targetBrand || null,
+      userRisk: scamData.userRisk || null
     })
   });
 } catch (err) {
-  console.error("Logging failed:", err.message);
+  console.error("Screenshot logging failed:", err.message);
 }
 return res.status(200).json({
   ...scamData,
