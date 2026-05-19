@@ -359,6 +359,20 @@ Analyze suspicious messages for Malaysian scam patterns such as:
 - fake ticket scams
 - tech support scams
 
+Scam category intelligence rules:
+- scamType should be the specific scam type, such as "fake parcel delivery scam" or "OTP phishing".
+- scamFamily should be the broader category.
+- attackVector should describe the channel if clear.
+- targetBrand should identify the impersonated brand, such as Maybank, CIMB, TNG, KWSP, Pos Laju, LHDN, PDRM, Shopee, or null.
+- userRisk should describe what the scam is trying to steal or achieve.
+
+Confidence transparency rules:
+- confidence is how confident ScamShield is in the analysis, from 0 to 100.
+- Use high confidence when there are strong signals like unknown URL, OTP request, impersonation, urgency, payment request, APK download, or fake parcel/bank wording.
+- Use medium confidence when the message is suspicious but missing key evidence.
+- Use low confidence when the message is incomplete, blurry, vague, or has too little context.
+- confidenceReason must explain the confidence in simple user-friendly language.
+
 Whitelist and URL context:
 ${trustedContext}
 ${suspiciousUrlContext}
@@ -373,10 +387,16 @@ Required JSON format:
 {
   "verdict": "LIKELY SCAM" or "POSSIBLE SCAM" or "LOOKS SAFE",
   "riskScore": number 0-100,
+  "confidence": number 0-100,
+  "confidenceReason": "short explanation of how confident ScamShield is",
   "summary": "1-2 sentence plain language summary",
   "redFlags": ["flag1", "flag2"],
   "whatToDo": ["action1", "action2"],
   "scamType": "type of scam or null",
+  "scamFamily": "Bank Impersonation or Parcel Scam or Investment Scam or Job Scam or E-wallet Scam or Government Aid Scam or Loan Scam or Tech Support Scam or Marketplace Scam or Phishing or Unknown or null",
+  "attackVector": "SMS or WhatsApp or Email or Website or Phone Call or Social Media or Screenshot or Unknown",
+  "targetBrand": "brand or organization being impersonated, or null",
+  "userRisk": "Credential theft or OTP theft or Payment loss or Malware/APK install or Mule account risk or Personal data theft or Unknown or null",
   "officialLinks": [{"label":"label","url":"url"}]
 }
 
@@ -450,7 +470,20 @@ const finalScore = Math.round((aiScore * 0.6) + (ruleScore * 0.4));
 
 parsed.riskScore = finalScore;
 parsed.ruleSignals = ruleRisk.ruleSignals;
+parsed.confidence = Number(parsed.confidence || finalScore || 0);
 
+if (!parsed.confidenceReason) {
+  parsed.confidenceReason =
+    ruleRisk.ruleSignals.length > 0
+      ? "Confidence is based on detected scam indicators such as suspicious wording, URLs, or impersonation patterns."
+      : "Confidence is lower because there were few clear scam indicators.";
+}
+
+parsed.scamFamily = parsed.scamFamily || null;
+parsed.attackVector = parsed.attackVector || "Unknown";
+parsed.targetBrand = parsed.targetBrand || null;
+parsed.userRisk = parsed.userRisk || null;
+    
 if (finalScore >= 75) {
   parsed.verdict = "LIKELY SCAM";
 } else if (finalScore >= 40) {
