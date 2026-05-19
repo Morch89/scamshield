@@ -44,7 +44,7 @@ export default async function handler(req, res) {
         Authorization: `Bearer ${process.env.GROQ_API_KEY}`
       },
       body: JSON.stringify({
-        model: "meta-llama/llama-4-maverick-17b-128e-instruct",
+        model: "meta-llama/llama-4-scout-17b-16e-instruct",
         temperature: 0,
         max_completion_tokens: 1000,
         response_format: { type: "json_object" },
@@ -57,14 +57,19 @@ export default async function handler(req, res) {
                 text: `
 You are ScamShield Malaysia.
 
-Extract all visible text from this screenshot.
+You are an OCR engine.
 
-You MUST copy the actual text shown in the image into extractedText.
-Do not summarize.
-Do not say whether it is a scam.
-Do not return empty extractedText if any readable words are visible.
-If there are URLs, copy them exactly.
-If there are phone numbers, copy them exactly.
+Your primary task is to copy every readable word from the screenshot exactly as shown.
+
+Rules:
+- Do NOT summarize.
+- Do NOT explain.
+- Do NOT decide if it is a scam.
+- Preserve URLs exactly.
+- Preserve phone numbers exactly.
+- Preserve spelling mistakes exactly.
+- Read small text carefully.
+- If text is partially unreadable, still extract the visible parts.
 
 ${languageInstruction}
 
