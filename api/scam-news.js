@@ -37,36 +37,64 @@ function isMalaysiaRelevantArticle(item, language = "en") {
 
   if (language !== "zh") return true;
 
-  const malaysiaSignals = [
+  const strongMalaysiaSignals = [
     "马来西亚",
     "大马",
-    "我国",
-    "全国",
     "吉隆坡",
     "雪兰莪",
+    "雪州",
     "槟城",
+    "槟州",
     "柔佛",
+    "柔州",
     "新山",
     "霹雳",
     "怡保",
     "森美兰",
+    "森州",
     "马六甲",
     "彭亨",
     "登嘉楼",
     "吉兰丹",
     "沙巴",
     "砂拉越",
+    "砂州",
     "令吉",
-    "警方",
-    "商业罪案",
     "武吉阿曼",
     "国家银行",
-    "报案",
-    "女会计师",
-    "退休教师"
+    "商业罪案调查局",
+    "全国商业罪案调查部",
+    "投报",
+    "报案"
   ];
 
-  return malaysiaSignals.some((word) => text.includes(word));
+  const foreignSignals = [
+    "新加坡",
+    "狮城",
+    "印尼",
+    "印度尼西亚",
+    "雅加达",
+    "台湾",
+    "香港",
+    "中国",
+    "大陆",
+    "美国"
+  ];
+
+  const hasStrongMalaysiaSignal = strongMalaysiaSignals.some((word) =>
+    text.includes(word)
+  );
+
+  const hasForeignSignal = foreignSignals.some((word) =>
+    text.includes(word)
+  );
+
+  // Reject foreign articles unless there is a strong Malaysia signal too
+  if (hasForeignSignal && !hasStrongMalaysiaSignal) {
+    return false;
+  }
+
+  return hasStrongMalaysiaSignal;
 }
 export default async function handler(req, res) {
   try {
