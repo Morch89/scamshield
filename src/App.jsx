@@ -1470,7 +1470,7 @@ function reset() {
                 fontWeight: 700
               }}
             >
-              {article.source} → {t.readArticle}
+              {article.source} • {article.language?.toUpperCase()} → {t.readArticle}
             </div>
           </a>
         ))}
