@@ -111,7 +111,10 @@ Return ONLY valid raw JSON:
     }
 
     const ocrData = safeJsonParse(raw);
-
+    return res.status(200).json({
+  debug: true,
+  ocrData
+});
     if (!ocrData.extractedText || ocrData.extractedText.trim().length < 5) {
       return res.status(200).json({
         source: "screenshot",
