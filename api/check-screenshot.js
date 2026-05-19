@@ -56,9 +56,14 @@ export default async function handler(req, res) {
                 text: `
 You are ScamShield Malaysia.
 
-Extract scam-checking information from this screenshot.
-Do NOT decide the scam verdict here.
-Only extract readable evidence.
+Extract all visible text from this screenshot.
+
+You MUST copy the actual text shown in the image into extractedText.
+Do not summarize.
+Do not say whether it is a scam.
+Do not return empty extractedText if any readable words are visible.
+If there are URLs, copy them exactly.
+If there are phone numbers, copy them exactly.
 
 ${languageInstruction}
 
@@ -73,7 +78,7 @@ Important:
 
 Return ONLY valid raw JSON:
 {
-  "extractedText": "all readable text from the screenshot",
+  "extractedText": "exact full text copied from the screenshot, line by line",
   "urls": ["url1", "url2"],
   "phones": ["phone1", "phone2"],
   "brands": ["brand1", "brand2"],
@@ -141,14 +146,29 @@ Return ONLY valid raw JSON:
     const host = req.headers.host;
 const protocol = host && host.includes("localhost") ? "http" : "https";
 const baseUrl = `${protocol}://${host}`;
+const combinedText = `
+Screenshot OCR text:
+${ocrData.extractedText || ""}
 
+Detected URLs:
+${(ocrData.urls || []).join("\n")}
+
+Detected phones:
+${(ocrData.phones || []).join("\n")}
+
+Detected brands:
+${(ocrData.brands || []).join(", ")}
+
+Detected keywords:
+${(ocrData.keywords || []).join(", ")}
+`.trim();
 const scamResponse = await fetch(`${baseUrl}/api/check-scam`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        text: ocrData.extractedText,
+        text: combinedText,
         language,
         source: "screenshot"
       })
