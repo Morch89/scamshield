@@ -338,7 +338,24 @@ async function submitFeedback() {
             </button>
           </div>
         </div>
-
+<select
+  value={language}
+  onChange={(e) => setLanguage(e.target.value)}
+  style={{
+    background: "rgba(255,255,255,0.06)",
+    color: "#fff",
+    border: "1px solid rgba(255,255,255,0.08)",
+    padding: "10px 12px",
+    borderRadius: 12,
+    fontWeight: 700,
+    cursor: "pointer",
+    fontSize: 13
+  }}
+>
+  <option value="en">English</option>
+  <option value="ms">Bahasa Melayu</option>
+  <option value="zh">中文</option>
+</select>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
           <div style={{ width: 46, height: 46, borderRadius: 14, background: "linear-gradient(135deg,#00C864,#009950)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, boxShadow: "0 4px 20px rgba(0,200,100,0.35)" }}>🛡️</div>
           <div>
@@ -385,37 +402,7 @@ async function submitFeedback() {
         <div style={{ width: "100%", maxWidth: 600, padding: "20px 20px 0" }}>
           {!result ? (
             <div style={scamCardStyle}>
-              <div style={{ marginBottom: 12 }}>
-  <label
-    style={{
-      color: "#7A8FA6",
-      fontSize: 12,
-      display: "block",
-      marginBottom: 6
-    }}
-  >
-    {t.responseLanguage}
-  </label>
-
-  <select
-    value={language}
-    onChange={(e) => setLanguage(e.target.value)}
-    style={{
-      width: "100%",
-      background: "rgba(0,0,0,0.3)",
-      border: "1px solid rgba(255,255,255,0.09)",
-      borderRadius: 12,
-      padding: "12px 14px",
-      color: "#E5E5EA",
-      fontSize: 14,
-      outline: "none"
-    }}
-  >
-    <option value="en">English</option>
-    <option value="ms">Bahasa Melayu</option>
-    <option value="zh">简体中文</option>
-  </select>
-</div>
+             
               <textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
@@ -708,13 +695,13 @@ async function submitFeedback() {
         fontSize: 12
       }}>
         <button onClick={() => setPage("privacy")} style={footerButtonStyle}>
-          Privacy Policy
+          {t.privacy}
         </button>
 
         <span style={{ color: "#3D5166" }}>•</span>
 
         <button onClick={() => setPage("disclaimer")} style={footerButtonStyle}>
-          Disclaimer
+          {t.disclaimer}
         </button>
       </div>
     </div>
