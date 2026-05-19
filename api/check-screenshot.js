@@ -128,25 +128,23 @@ Return ONLY valid raw JSON:
 });
     if (!ocrData.extractedText || ocrData.extractedText.trim().length < 5) {
       return res.status(200).json({
-        source: "screenshot",
-        ocrData: {
-          extractedText: "",
-          urls: [],
-          phones: [],
-          brands: [],
-          keywords: [],
-          ocrConfidence: 0
-        },
-        result: {
-          verdict: "POSSIBLE SCAM",
-          riskScore: 50,
-          summary: "The screenshot text could not be read clearly enough for a reliable analysis.",
-          redFlags: ["Screenshot text is unclear or incomplete"],
-          whatToDo: ["Upload a clearer screenshot or paste the message text directly."],
-          scamType: null,
-          officialLinks: []
-        }
-      });
+  verdict: "POSSIBLE SCAM",
+  riskScore: 50,
+  summary: "The screenshot text could not be read clearly enough for a reliable analysis.",
+  redFlags: ["Screenshot text is unclear or incomplete"],
+  whatToDo: ["Upload a clearer screenshot or paste the message text directly."],
+  scamType: null,
+  officialLinks: [],
+  source: "screenshot",
+  ocrData: {
+    extractedText: "",
+    urls: [],
+    phones: [],
+    brands: [],
+    keywords: [],
+    ocrConfidence: 0
+  }
+});
     }
 
     const host = req.headers.host;
@@ -201,10 +199,10 @@ try {
     }
 
     return res.status(200).json({
-      source: "screenshot",
-      ocrData,
-      result: scamData
-    });
+  ...scamData,
+  source: "screenshot",
+  ocrData
+});
 
   } catch (err) {
     return res.status(500).json({ error: err.message });
