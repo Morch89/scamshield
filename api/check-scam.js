@@ -13,21 +13,10 @@ export default async function handler(req, res) {
     }
 
     const languageInstruction = {
-  en: `
-You MUST write all user-facing response values in English.
-Even if the input message is Malay, Chinese, or mixed language, the output values must be English.
-`,
-  ms: `
-You MUST write all user-facing response values in Bahasa Melayu.
-Even if the input message is English, Chinese, or mixed language, the output values must be Bahasa Melayu.
-`,
-  zh: `
-You MUST write all user-facing response values in Simplified Chinese.
-Even if the input message is English, Malay, or mixed language, the output values must be Simplified Chinese.
-`
-}[language] || `
-You MUST write all user-facing response values in English.
-`;
+  en: "Write all user-facing values in English.",
+  ms: "Write all user-facing values in Bahasa Melayu.",
+  zh: "Write all user-facing values in Simplified Chinese. JSON keys must stay in English."
+}[language] || "Write all user-facing values in English.";
 
     const systemPrompt = `
 You are ScamShield Malaysia, a scam detection assistant for Malaysian users.
@@ -86,7 +75,6 @@ Use only these official Malaysian resources when relevant:
         model: "llama-3.1-8b-instant",
         temperature: 0,
         max_completion_tokens: 900,
-        response_format: { type: "json_object" },
         messages: [
           {
             role: "system",
@@ -110,18 +98,30 @@ Use only these official Malaysian resources when relevant:
 
     const raw = data.choices?.[0]?.message?.content;
 
-    if (!raw) {
-      return res.status(500).json({
-        error: "No response returned from Groq."
-      });
-    }
+if (!raw) {
+  return res.status(500).json({
+    error: "No response returned from Groq."
+  });
+}
 
-    const cleaned = raw
-      .replace(/```json/g, "")
-      .replace(/```/g, "")
-      .trim();
+const cleaned = raw
+  .replace(/```json/g, "")
+  .replace(/```/g, "")
+  .trim();
 
-    return res.status(200).json(JSON.parse(cleaned));
+let parsed;
+
+try {
+  parsed = JSON.parse(cleaned);
+} catch {
+  const match = cleaned.match(/\{[\s\S]*\}/);
+  if (!match) {
+    throw new Error("AI returned invalid JSON.");
+  }
+  parsed = JSON.parse(match[0]);
+}
+
+return res.status(200).json(parsed);
 
   } catch (err) {
     return res.status(500).json({
