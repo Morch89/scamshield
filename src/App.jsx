@@ -120,6 +120,23 @@ checkFeedbackThanks: "✅ 谢谢！你的反馈已记录。",
   }
 };
 
+const navButtonStyle = {
+  color: "#fff",
+  border: "1px solid rgba(255,255,255,0.08)",
+  padding: "10px 16px",
+  borderRadius: 12,
+  fontWeight: 700,
+  cursor: "pointer",
+  fontSize: 13,
+  minHeight: 44,
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  lineHeight: 1.15,
+  textAlign: "center",
+  whiteSpace: "normal"
+};
+
 const VERDICTS = {
   "LIKELY SCAM": { bg: "#FF3B30", light: "#FFF0EF", text: "#CC0000", icon: "⚠️" },
   "POSSIBLE SCAM": { bg: "#FF9500", light: "#FFF8EE", text: "#B35900", icon: "🔶" },
@@ -693,7 +710,12 @@ function reset() {
     <button
       onClick={() => setPage("home")}
       style={{
-  background: "...",
+  ...navButtonStyle,
+  background:
+    page === "home"
+      ? "linear-gradient(135deg,#00C864,#00A651)"
+      : "rgba(255,255,255,0.06)"
+}}
   color: "#fff",
   border: "1px solid rgba(255,255,255,0.08)",
   padding: "10px 16px",
@@ -716,7 +738,12 @@ function reset() {
     <button
       onClick={() => setPage("learn")}
       style={{
-  background: "...",
+  ...navButtonStyle,
+  background:
+    page === "home"
+      ? "linear-gradient(135deg,#00C864,#00A651)"
+      : "rgba(255,255,255,0.06)"
+}}
   color: "#fff",
   border: "1px solid rgba(255,255,255,0.08)",
   padding: "10px 16px",
@@ -743,7 +770,12 @@ function reset() {
     setShowFeedbackForm(true);
   }}
   style={{
-  background: "...",
+  ...navButtonStyle,
+  background:
+    page === "home"
+      ? "linear-gradient(135deg,#00C864,#00A651)"
+      : "rgba(255,255,255,0.06)"
+}}
   color: "#fff",
   border: "1px solid rgba(255,255,255,0.08)",
   padding: "10px 16px",
@@ -768,7 +800,12 @@ function reset() {
   target="_blank"
   rel="noopener noreferrer"
   style={{
-  background: "...",
+  ...navButtonStyle,
+  background:
+    page === "home"
+      ? "linear-gradient(135deg,#00C864,#00A651)"
+      : "rgba(255,255,255,0.06)"
+}}
   color: "#fff",
   border: "1px solid rgba(255,255,255,0.08)",
   padding: "10px 16px",
