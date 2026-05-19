@@ -76,9 +76,10 @@ Use only these official Malaysian resources when relevant:
         "Authorization": `Bearer ${process.env.GROQ_API_KEY}`
       },
       body: JSON.stringify({
-        model: "llama-3.1-8b-instant",
+        model: "qwen/qwen3-32b",
         temperature: 0,
-        max_completion_tokens: 900,
+        max_completion_tokens: 1000,
+        reasoning_format: "hidden",
        messages: [
   {
     role: "system",
@@ -90,12 +91,13 @@ Use only these official Malaysian resources when relevant:
 SELECTED_OUTPUT_LANGUAGE: ${language}
 
 Language rules:
-- If SELECTED_OUTPUT_LANGUAGE is "en", all user-facing JSON values must be English.
-- If SELECTED_OUTPUT_LANGUAGE is "ms", all user-facing JSON values must be Bahasa Melayu.
-- If SELECTED_OUTPUT_LANGUAGE is "zh", all user-facing JSON values must be Simplified Chinese.
-- Ignore the language of the suspicious message.
-- Do not translate the JSON keys.
-- Only translate JSON values.
+- en = English only
+- ms = Bahasa Melayu only
+- zh = Simplified Chinese only
+- Ignore the input message language.
+- Follow SELECTED_OUTPUT_LANGUAGE only.
+- JSON keys stay English.
+- JSON values must follow selected language.
 
 Suspicious message to analyse:
 ${text}
