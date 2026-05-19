@@ -135,12 +135,11 @@ Return ONLY valid raw JSON:
       });
     }
 
-    const baseUrl =
-      process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : req.headers.origin;
+    const host = req.headers.host;
+const protocol = host && host.includes("localhost") ? "http" : "https";
+const baseUrl = `${protocol}://${host}`;
 
-    const scamResponse = await fetch(`${baseUrl}/api/check-scam`, {
+const scamResponse = await fetch(`${baseUrl}/api/check-scam`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -152,7 +151,18 @@ Return ONLY valid raw JSON:
       })
     });
 
-    const scamData = await scamResponse.json();
+    const scamRaw = await scamResponse.text();
+
+let scamData;
+try {
+  scamData = JSON.parse(scamRaw);
+} catch {
+  return res.status(500).json({
+    error: "Scam check endpoint did not return JSON.",
+    rawPreview: scamRaw.slice(0, 200),
+    calledUrl: `${baseUrl}/api/check-scam`
+  });
+}
 
     if (!scamResponse.ok) {
       return res.status(scamResponse.status).json({
