@@ -296,7 +296,12 @@ setResult(data);
     "Content-Type": "text/plain"
   },
   body: JSON.stringify({
-    action: "increment"
+    action: "logCheck",
+    language,
+    text: input,
+    verdict: data.verdict,
+    riskScore: data.riskScore,
+    scamType: data.scamType
   })
 });
 
@@ -683,7 +688,7 @@ async function submitFeedback() {
 
 <h3 style={{ color: "#fff" }}>Messages submitted for analysis</h3>
 <p>
-  When you paste a message into the scam checker, the message is sent to our backend API and then processed by a third-party AI provider to generate a scam risk assessment. You should not submit passwords, OTP codes, banking credentials, identity card numbers, or other highly sensitive personal information.
+  When you paste a message into the scam checker, the message is sent to our backend API and then processed by a third-party AI provider to generate a scam risk assessment. You should not submit passwords, OTP codes, banking credentials, identity card numbers, or other highly sensitive personal information. Submitted scam messages may be stored for analytics, scam trend monitoring, and improving ScamShield detection quality.
 </p>
 
 <h3 style={{ color: "#fff" }}>Usage counter</h3>
