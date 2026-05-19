@@ -536,8 +536,9 @@ if (finalScore >= 75) {
     const feedbackId =
   req.body.feedbackId ||
   `chk_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+
 await logScamCheck({
-  feedbackID,
+  feedbackId,
   timestamp: new Date().toISOString(),
   source: req.body.source || "website",
   language,
@@ -551,7 +552,7 @@ await logScamCheck({
   userRisk: parsed.userRisk || null
 });
 
-    parsed.feedbackId = feedbackId;
+parsed.feedbackId = feedbackId;
     
 return res.status(200).json(parsed);
   } catch (err) {
