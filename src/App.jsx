@@ -454,6 +454,8 @@ export default function ScamShield() {
   const [feedback, setFeedback] = useState("");
   const [feedbackSent, setFeedbackSent] = useState(false);
   const [sendingFeedback, setSendingFeedback] = useState(false);
+  const [imagePreview, setImagePreview] = useState("");
+  const [screenshotFileName, setScreenshotFileName] = useState("");
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxMJhfuI1Dj4OsIk_26YqmGsA1m6pUvWFbIhoBDJ1hN9konv4Q7f-ST6hdo4IS7PprlNQ/exec";
 
 useEffect(() => {
@@ -464,7 +466,16 @@ useEffect(() => {
     })
     .catch(console.error);
 }, []);
-  
+  function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+
+    reader.readAsDataURL(file);
+  });
+}
   async function analyze() {
     const input = text.trim();
 
@@ -545,10 +556,78 @@ async function submitFeedback() {
 
   setSendingFeedback(false);
 }
+  async function analyzeScreenshot(file) {
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    setError("Please upload an image file.");
+    return;
+  }
+
+  if (file.size > 4 * 1024 * 1024) {
+    setError("Image is too large. Please upload an image below 4MB.");
+    return;
+  }
+
+  setLoading(true);
+  setResult(null);
+  setError("");
+
+  try {
+    const imageBase64 = await fileToBase64(file);
+
+    setImagePreview(imageBase64);
+    setScreenshotFileName(file.name);
+
+    const res = await fetch("/api/check-screenshot", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        imageBase64,
+        language
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Screenshot analysis failed.");
+    }
+
+    setResult(data);
+
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain"
+      },
+      body: JSON.stringify({
+        action: "logCheck",
+        language,
+        text: "[Screenshot uploaded: " + file.name + "]",
+        verdict: data.verdict,
+        riskScore: data.riskScore,
+        scamType: data.scamType
+      })
+    });
+
+    setCheckCount((current) => current + 1);
+  } catch (e) {
+    setError("Analysis failed: " + e.message);
+  }
+
+  setLoading(false);
+}
   function reset() {
-    setResult(null);
-    setText("");
-    setError("");
+  setResult(null);
+  setText("");
+  setError("");
+  setImagePreview("");
+  setScreenshotFileName("");
+}
   }
 
   const v = result ? VERDICTS[result.verdict] || VERDICTS["LOOKS SAFE"] : null;
@@ -744,7 +823,36 @@ async function submitFeedback() {
                 rows={8}
                 style={{ width: "100%", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 12, padding: "14px 16px", color: "#E5E5EA", fontSize: 14, fontFamily: "inherit", lineHeight: 1.65, resize: "none", outline: "none", boxSizing: "border-box" }}
               />
+<div style={{ marginTop: 12 }}>
+  <label
+    style={{
+      display: "block",
+      textAlign: "center",
+      border: "1px dashed rgba(255,255,255,0.22)",
+      borderRadius: 12,
+      padding: "14px 16px",
+      color: "#B8FFD8",
+      cursor: "pointer",
+      fontSize: 13,
+      fontWeight: 700,
+      background: "rgba(0,200,100,0.06)"
+    }}
+  >
+    📷 Upload scam screenshot
+    <input
+      type="file"
+      accept="image/*"
+      onChange={(e) => analyzeScreenshot(e.target.files?.[0])}
+      style={{ display: "none" }}
+    />
+  </label>
+</div>
 
+{imagePreview && !result && (
+  <div style={{ marginTop: 12, color: "#7A8FA6", fontSize: 12 }}>
+    Uploaded: {screenshotFileName}
+  </div>
+)}
               {error && (
                 <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(255,59,48,0.12)", borderRadius: 8, color: "#FF6B6B", fontSize: 13 }}>
                   {error}
