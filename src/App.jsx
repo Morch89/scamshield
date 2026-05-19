@@ -381,20 +381,26 @@ async function submitFeedback() {
     value={language}
     onChange={(e) => setLanguage(e.target.value)}
     style={{
-      background: "rgba(255,255,255,0.06)",
-      color: "#fff",
-      border: "1px solid rgba(255,255,255,0.08)",
-      padding: "10px 14px",
-      borderRadius: 12,
-      fontWeight: 700,
-      cursor: "pointer",
-      fontSize: 13,
-      outline: "none"
+     background: "#111827",
+    color: "#ffffff",
+    border: "1px solid rgba(255,255,255,0.18)",
+    padding: "10px 14px",
+    borderRadius: 12,
+    fontWeight: 700,
+    cursor: "pointer",
+    fontSize: 13,
+    outline: "none"
     }}
   >
-    <option value="en">English</option>
-    <option value="ms">Bahasa Melayu</option>
-    <option value="zh">中文</option>
+      <option style={{ background: "#ffffff", color: "#111827" }} value="en">
+    English
+  </option>
+  <option style={{ background: "#ffffff", color: "#111827" }} value="ms">
+    Bahasa Melayu
+  </option>
+  <option style={{ background: "#ffffff", color: "#111827" }} value="zh">
+    中文
+  </option>
   </select>
 </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
