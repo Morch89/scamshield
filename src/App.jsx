@@ -721,12 +721,12 @@ function reset() {
       📚 {t.learn}
     </button>
 
-    <button
+   <button
   onClick={() => {
-  setFeedbackSent(false);
-  setFeedback("");
-  setShowFeedbackForm(true);
-}}
+    setFeedbackSent(false);
+    setFeedback("");
+    setShowFeedbackForm(true);
+  }}
   style={{
     background: "rgba(255,255,255,0.06)",
     color: "#fff",
@@ -738,7 +738,10 @@ function reset() {
     fontSize: 13
   }}
 >
-      <a
+  💬 {t.feedbackMenu}
+</button>
+
+<a
   href="https://t.me/ScamShieldMalaysiaBot"
   target="_blank"
   rel="noopener noreferrer"
