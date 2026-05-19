@@ -122,11 +122,67 @@ Return ONLY valid raw JSON:
     }
 
     const ocrData = safeJsonParse(raw);
+    const combinedText = `
+Screenshot OCR text:
+${ocrData.extractedText || ""}
+
+Detected URLs:
+${(ocrData.urls || []).join("\n")}
+
+Detected phones:
+${(ocrData.phones || []).join("\n")}
+
+Detected brands:
+${(ocrData.brands || []).join(", ")}
+
+Detected keywords:
+${(ocrData.keywords || []).join(", ")}
+`.trim();
+
+const host = req.headers.host;
+const protocol = host && host.includes("localhost") ? "http" : "https";
+const baseUrl = `${protocol}://${host}`;
+
+const scamResponse = await fetch(`${baseUrl}/api/check-scam`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    text: combinedText,
+    language,
+    source: "screenshot"
+  })
+});
+
+const scamRaw = await scamResponse.text();
+
+let scamData;
+try {
+  scamData = JSON.parse(scamRaw);
+} catch {
+  return res.status(500).json({
+    error: "Scam check endpoint did not return JSON.",
+    rawPreview: scamRaw.slice(0, 300),
+    calledUrl: `${baseUrl}/api/check-scam`
+  });
+}
+
+if (!scamResponse.ok) {
+  return res.status(scamResponse.status).json({
+    error: scamData.error || "Scam check failed after OCR.",
+    ocrData
+  });
+}
+
+return res.status(200).json({
+  ...scamData,
+  source: "screenshot",
+  ocrData,
+  debugTextSentToScamCheck: combinedText
+});
     return res.status(200).json({
-  debug: true,
-  message: "OCR step completed. Scam check not called yet.",
-  rawModelOutput: raw,
-  ocrData
+  
 });
     if (!ocrData.extractedText || ocrData.extractedText.trim().length < 5) {
       return res.status(200).json({
