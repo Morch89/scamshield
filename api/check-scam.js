@@ -63,6 +63,38 @@ const TRUSTED_DOMAINS = [
   "fedex.com"
 ];
 
+const SUSPICIOUS_DOMAIN_PATTERNS = [
+  "secure",
+  "verify",
+  "reward",
+  "claim",
+  "bonus",
+  "gift",
+  "freecash",
+  "touchngo",
+  "tng",
+  "maybank",
+  "cimb",
+  "kwsp",
+  "bankislam",
+  "pbebank",
+  "reload",
+  "otp",
+  "parcel",
+  "delivery"
+];
+
+function looksLikeImpersonation(url) {
+  const hostname = getHostname(url);
+
+  if (!hostname) return false;
+  if (isTrustedUrl(url)) return false;
+
+  return SUSPICIOUS_DOMAIN_PATTERNS.some((keyword) =>
+    hostname.includes(keyword)
+  );
+}
+
 function extractUrls(text) {
   const regex = /(https?:\/\/[^\s]+)/g;
   return text.match(regex) || [];
@@ -177,7 +209,55 @@ function getSafeResultForTrustedSite(language) {
     officialLinks: []
   };
 }
+function getRuleBasedRisk(text, urls, suspiciousUrls) {
 
+  let score = 0;
+  const signals = [];
+
+  function add(points, label) {
+    score += points;
+    signals.push(label);
+  }
+
+  if (suspiciousUrls.length > 0) {
+  add(20, "Contains unknown or untrusted URL");
+}
+
+const impersonationUrls = suspiciousUrls.filter(looksLikeImpersonation);
+
+if (impersonationUrls.length > 0) {
+  add(35, "URL appears to impersonate a bank, wallet, parcel, or government service");
+}
+
+  if (/(otp|tac|verification code|kod pengesahan|验证码)/i.test(text)) {
+    add(35, "Mentions OTP/TAC/verification code");
+  }
+
+  if (/(urgent|immediately|segera|limited time|account suspended|akaun digantung)/i.test(text)) {
+    add(15, "Uses urgent or threatening language");
+  }
+
+  if (/(maybank|cimb|tng|touch n go|kwsp|lhdn|hasil|pdrm|bank)/i.test(text)) {
+    add(15, "Mentions bank, wallet, or government brand");
+  }
+
+  if (/(click|klik|login|log in|verify|claim|tebus|redeem|update)/i.test(text)) {
+    add(15, "Asks user to click, login, verify, or claim");
+  }
+
+  if (/(apk|install app|download app|muat turun aplikasi)/i.test(text)) {
+    add(40, "Asks user to download or install an app/APK");
+  }
+
+  if (/(investment|pelaburan|guaranteed return|profit|crypto|forex)/i.test(text)) {
+    add(25, "Mentions investment or guaranteed profit");
+  }
+
+  return {
+    ruleScore: Math.min(score, 100),
+    ruleSignals: signals
+  };
+}
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({
@@ -197,6 +277,7 @@ export default async function handler(req, res) {
     const urls = extractUrls(text);
     const trustedUrls = urls.filter(isTrustedUrl);
     const suspiciousUrls = urls.filter((url) => !isTrustedUrl(url));
+    const ruleRisk = getRuleBasedRisk(text, urls, suspiciousUrls);
 
     const textLower = text.toLowerCase();
 
@@ -254,6 +335,15 @@ Important language rules:
   summary, redFlags, whatToDo, scamType, officialLinks.label
 - The verdict value must stay exactly one of:
   "LIKELY SCAM", "POSSIBLE SCAM", "LOOKS SAFE"
+
+Rule-based scam signals detected:
+Risk score from rules: ${ruleRisk.ruleScore}/100
+Signals:
+${ruleRisk.ruleSignals.length ? ruleRisk.ruleSignals.join("\n") : "No strong rule-based signals detected."}
+
+Use these rule-based signals as supporting evidence.
+Do not ignore them.
+However, if the message is clearly safe, you may reduce the final score.
 
 Analyze suspicious messages for Malaysian scam patterns such as:
 - phishing
@@ -353,7 +443,23 @@ ${text}
 
     const parsed = safeJsonParse(raw);
 
-    return res.status(200).json(parsed);
+const aiScore = Number(parsed.riskScore || 0);
+const ruleScore = Number(ruleRisk.ruleScore || 0);
+
+const finalScore = Math.round((aiScore * 0.6) + (ruleScore * 0.4));
+
+parsed.riskScore = finalScore;
+parsed.ruleSignals = ruleRisk.ruleSignals;
+
+if (finalScore >= 75) {
+  parsed.verdict = "LIKELY SCAM";
+} else if (finalScore >= 40) {
+  parsed.verdict = "POSSIBLE SCAM";
+} else {
+  parsed.verdict = "LOOKS SAFE";
+}
+
+return res.status(200).json(parsed);
   } catch (err) {
     return res.status(500).json({
       error: err.message
