@@ -674,37 +674,37 @@ async function submitFeedback() {
             fontSize: 14
           }}>
             <h2 style={{ color: "#fff", fontSize: 30, marginBottom: 8 }}>
-              {t.privacy}
-            </h2>
+  {t.privacy}
+</h2>
 
-            <p>
-              ScamShield Malaysia is designed to help users check suspicious messages for possible scam indicators. This privacy policy explains how information may be handled when you use this website.
-            </p>
+<p>
+  ScamShield Malaysia helps users check suspicious messages for possible scam indicators. This Privacy Policy explains how information is handled when you use this website.
+</p>
 
-            <h3 style={{ color: "#fff" }}>Information you provide</h3>
-            <p>
-              When you paste a message into the scam checker, the text is used to generate a scam risk result. In the current demo version, checks are processed locally in your browser and are not stored by us.
-            </p>
+<h3 style={{ color: "#fff" }}>Messages submitted for analysis</h3>
+<p>
+  When you paste a message into the scam checker, the message is sent to our backend API and then processed by a third-party AI provider to generate a scam risk assessment. You should not submit passwords, OTP codes, banking credentials, identity card numbers, or other highly sensitive personal information.
+</p>
 
-            <h3 style={{ color: "#fff" }}>Local counter</h3>
-            <p>
-              The number of scam checks performed is stored locally in your browser using localStorage. This count is only visible on your device and is not a global public counter.
-            </p>
+<h3 style={{ color: "#fff" }}>Usage counter</h3>
+<p>
+  ScamShield records the number of scam checks performed using a Google Sheets-based counter. This is used to show general usage activity and does not identify individual users.
+</p>
 
-            <h3 style={{ color: "#fff" }}>Feedback</h3>
-            <p>
-              If you submit feedback using the feedback button, your email application may open and send your message to life.alexchoo@gmail.com. Your email address and message content will be visible to the recipient.
-            </p>
+<h3 style={{ color: "#fff" }}>Feedback</h3>
+<p>
+  If you submit feedback, your feedback message may be saved into a Google Sheet for review and product improvement. Please do not include sensitive personal, banking, or security information in feedback.
+</p>
 
-            <h3 style={{ color: "#fff" }}>Future AI processing</h3>
-            <p>
-              If ScamShield is connected to a live AI backend in the future, submitted messages may be sent to a third-party AI provider for analysis. You should avoid pasting sensitive personal information, passwords, OTP codes, banking details, or identity documents.
-            </p>
+<h3 style={{ color: "#fff" }}>Third-party services</h3>
+<p>
+  ScamShield may use third-party services such as Vercel for hosting, an AI API provider for scam analysis, and Google Sheets / Google Apps Script for storing feedback and usage counts.
+</p>
 
-            <h3 style={{ color: "#fff" }}>Contact</h3>
-            <p>
-              For privacy-related questions, contact: life.alexchoo@gmail.com
-            </p>
+<h3 style={{ color: "#fff" }}>Contact</h3>
+<p>
+  For privacy-related questions, contact: life.alexchoo@gmail.com
+</p>
           </div>
         </div>
       )}
@@ -721,32 +721,37 @@ async function submitFeedback() {
             fontSize: 14
           }}>
             <h2 style={{ color: "#fff", fontSize: 30, marginBottom: 8 }}>
-              {t.disclaimer}
-            </h2>
+  {t.disclaimer}
+</h2>
 
-            <p>
-              ScamShield Malaysia provides general scam awareness and risk analysis for educational purposes only. The results are advisory and should not be treated as legal, financial, cybersecurity, banking, or law enforcement advice.
-            </p>
+<p>
+  ScamShield Malaysia provides AI-assisted scam awareness and risk analysis for educational purposes only. Results are advisory and should not be treated as legal, financial, cybersecurity, banking, or law enforcement advice.
+</p>
 
-            <h3 style={{ color: "#fff" }}>Accuracy</h3>
-            <p>
-              Scam detection results may not always be correct. A scam message may be missed, and a legitimate message may be flagged as suspicious. Always verify important matters through official channels.
-            </p>
+<h3 style={{ color: "#fff" }}>Accuracy</h3>
+<p>
+  Scam detection results may not always be correct. A scam message may be missed, and a legitimate message may be flagged as suspicious. False positives and false negatives are possible.
+</p>
 
-            <h3 style={{ color: "#fff" }}>User responsibility</h3>
-            <p>
-              Do not rely solely on ScamShield before making payments, sharing personal details, or responding to suspicious messages. Contact your bank, relevant company, or official authorities directly.
-            </p>
+<h3 style={{ color: "#fff" }}>User responsibility</h3>
+<p>
+  Do not rely solely on ScamShield before making payments, clicking links, sharing personal details, or responding to suspicious messages. Always verify directly through official websites, official apps, banks, or relevant authorities.
+</p>
 
-            <h3 style={{ color: "#fff" }}>Urgent scam cases</h3>
-            <p>
-              If you believe you have been scammed, contact your bank immediately and call the National Scam Response Centre at 997 where applicable. You may also check suspicious bank accounts using Semak Mule.
-            </p>
+<h3 style={{ color: "#fff" }}>AI limitations</h3>
+<p>
+  ScamShield uses AI to assess text patterns and risk indicators. The analysis may be affected by incomplete information, misleading wording, language ambiguity, or new scam tactics.
+</p>
 
-            <h3 style={{ color: "#fff" }}>No guarantee</h3>
-            <p>
-              ScamShield does not guarantee prevention of scams, recovery of funds, or complete accuracy of analysis.
-            </p>
+<h3 style={{ color: "#fff" }}>Urgent scam cases</h3>
+<p>
+  If you believe you have been scammed, contact your bank immediately and call the National Scam Response Centre at 997 where applicable. You may also check suspicious bank accounts using Semak Mule and report relevant cases to the authorities.
+</p>
+
+<h3 style={{ color: "#fff" }}>No guarantee</h3>
+<p>
+  ScamShield does not guarantee scam prevention, fund recovery, official verification, or complete accuracy of any analysis.
+</p>
           </div>
         </div>
       )}   
