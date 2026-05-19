@@ -11,7 +11,44 @@ export default async function handler(req, res) {
 
     const incomingText = req.body?.message?.text;
     const chat_id = req.body?.message?.chat?.id;
+    
+if (incomingText === "/start") {
 
+  await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      chat_id,
+      text: `
+🛡 Welcome to ScamShield Malaysia
+
+Send me:
+• suspicious messages
+• suspicious links
+• scam screenshots
+
+I will analyse them for:
+✅ phishing
+✅ fake parcel scams
+✅ OTP scams
+✅ fake bank alerts
+✅ investment scams
+✅ malware/APK scams
+
+Example:
+"Your parcel is suspended. Click here to update."
+
+⚠ ScamShield is an AI assistant and should not replace official police or bank advice.
+`
+    })
+  });
+
+  return res.status(200).json({
+    ok: true
+  });
+}
     if (!chat_id) {
       return res.status(200).json({
         ok: true,
