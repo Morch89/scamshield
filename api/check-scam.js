@@ -117,12 +117,13 @@ function getSafeResultForTrustedSite(language) {
   if (language === "ms") {
     return {
       verdict: "LOOKS SAFE",
-      riskScore: 5,
-      summary: "Pautan ini kelihatan seperti laman ScamShield yang telah dipercayai.",
+      riskScore: 1,
+      summary:
+        "Ini ialah laman ujian rasmi ScamShield Malaysia 😄 Anda baru sahaja cuba menyemak laman scam checker itu sendiri.",
       redFlags: [],
       whatToDo: [
-        "Pastikan alamat laman web dieja dengan betul sebelum berkongsi maklumat sensitif.",
-        "Jangan masukkan kata laluan, OTP atau maklumat perbankan jika anda tidak pasti."
+        "Teruskan menguji aplikasi ini dengan mesej scam yang mencurigakan.",
+        "Pastikan anda sentiasa menyemak URL sebelum berkongsi maklumat sensitif."
       ],
       scamType: null,
       officialLinks: []
@@ -132,12 +133,13 @@ function getSafeResultForTrustedSite(language) {
   if (language === "zh") {
     return {
       verdict: "LOOKS SAFE",
-      riskScore: 5,
-      summary: "此链接看起来是受信任的 ScamShield 网站。",
+      riskScore: 1,
+      summary:
+        "这是 ScamShield Malaysia 的官方测试网站 😄 你刚刚尝试检查诈骗检测器本身。",
       redFlags: [],
       whatToDo: [
-        "在输入任何敏感资料之前，请确认网址拼写正确。",
-        "如果不确定，请不要输入密码、OTP 或银行资料。"
+        "你可以继续使用可疑信息来测试此应用。",
+        "在输入敏感资料之前，请务必确认网址正确。"
       ],
       scamType: null,
       officialLinks: []
@@ -146,12 +148,13 @@ function getSafeResultForTrustedSite(language) {
 
   return {
     verdict: "LOOKS SAFE",
-    riskScore: 5,
-    summary: "This appears to be a trusted ScamShield website.",
+    riskScore: 1,
+    summary:
+      "This is the official ScamShield Malaysia testing site 😄 You just tried to scam-check the scam checker itself.",
     redFlags: [],
     whatToDo: [
-      "Always verify that the website address is spelled correctly before entering sensitive information.",
-      "Do not enter passwords, OTP codes, or banking details if you are unsure."
+      "Feel free to continue testing the app with suspicious messages.",
+      "Always verify website URLs before entering sensitive information."
     ],
     scamType: null,
     officialLinks: []
