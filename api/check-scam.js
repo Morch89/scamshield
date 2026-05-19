@@ -229,29 +229,33 @@ if (impersonationUrls.length > 0) {
   add(35, "URL appears to impersonate a bank, wallet, parcel, or government service");
 }
 
-  if (/(otp|tac|verification code|kod pengesahan|验证码)/i.test(text)) {
-    add(35, "Mentions OTP/TAC/verification code");
-  }
+if (/(otp|tac|verification code|kod pengesahan|验证码|一次性密码|驗證碼|动态密码|动态验证码)/i.test(text)) {
+  add(35, "Mentions OTP/TAC/verification code");
+}
 
-  if (/(urgent|immediately|segera|limited time|account suspended|akaun digantung)/i.test(text)) {
-    add(15, "Uses urgent or threatening language");
-  }
+if (/(urgent|immediately|segera|limited time|account suspended|akaun digantung|digantung|secepat mungkin|紧急|立即|马上|立刻|账号被冻结|帳號被凍結|账户暂停|賬戶暫停)/i.test(text)) {
+  add(15, "Uses urgent or threatening language");
+}
 
-  if (/(maybank|cimb|tng|touch n go|kwsp|lhdn|hasil|pdrm|bank)/i.test(text)) {
-    add(15, "Mentions bank, wallet, or government brand");
-  }
+if (/(maybank|cimb|tng|touch n go|kwsp|lhdn|hasil|pdrm|bank|银行|銀行|公积金|公積金|电子钱包|電子錢包)/i.test(text)) {
+  add(15, "Mentions bank, wallet, or government brand");
+}
 
-  if (/(click|klik|login|log in|verify|claim|tebus|redeem|update)/i.test(text)) {
-    add(15, "Asks user to click, login, verify, or claim");
-  }
+if (/(click|klik|tekan|login|log in|verify|claim|tebus|redeem|update|kemas kini|点击|點擊|登入|登录|验证|驗證|领取|領取|更新|提交资料|提交資料)/i.test(text)) {
+  add(15, "Asks user to click, login, verify, or claim");
+}
 
-  if (/(apk|install app|download app|muat turun aplikasi)/i.test(text)) {
-    add(40, "Asks user to download or install an app/APK");
-  }
+if (/(apk|install app|download app|muat turun aplikasi|下载安装|下載安裝|安装应用|安裝應用|下载APP|下載APP)/i.test(text)) {
+  add(40, "Asks user to download or install an app/APK");
+}
 
-  if (/(investment|pelaburan|guaranteed return|profit|crypto|forex)/i.test(text)) {
-    add(25, "Mentions investment or guaranteed profit");
-  }
+if (/(investment|pelaburan|guaranteed return|profit|crypto|forex|投资|投資|稳赚|穩賺|高回酬|高回报|虚拟货币|虛擬貨幣)/i.test(text)) {
+  add(25, "Mentions investment or guaranteed profit");
+}
+
+if (/(bit\.ly|tinyurl\.com|t\.co|goo\.gl|lihi\.cc|shorturl\.at|cutt\.ly)/i.test(text)) {
+  add(30, "Uses shortened URL that hides the final destination");
+}
 
   return {
     ruleScore: Math.min(score, 100),
@@ -466,7 +470,11 @@ ${text}
 const aiScore = Number(parsed.riskScore || 0);
 const ruleScore = Number(ruleRisk.ruleScore || 0);
 
-const finalScore = Math.round((aiScore * 0.6) + (ruleScore * 0.4));
+let finalScore = Math.round((aiScore * 0.4) + (ruleScore * 0.6));
+
+if (ruleScore >= 50 && aiScore < 40) {
+  finalScore = Math.max(finalScore, ruleScore);
+}
 
 parsed.riskScore = finalScore;
 parsed.ruleSignals = ruleRisk.ruleSignals;
