@@ -850,7 +850,20 @@ function reset() {
     />
   </label>
 </div>
-
+<div
+  style={{
+    marginTop: 10,
+    background: "rgba(255,149,0,0.08)",
+    border: "1px solid rgba(255,149,0,0.22)",
+    color: "#FFD9A0",
+    borderRadius: 12,
+    padding: "10px 12px",
+    fontSize: 11,
+    lineHeight: 1.6
+  }}
+>
+  ⚠️ {t.imageWarning}
+</div>
 {imagePreview && !result && (
   <div style={{ marginTop: 12, color: "#7A8FA6", fontSize: 12 }}>
     {t.uploaded}: {screenshotFileName}
