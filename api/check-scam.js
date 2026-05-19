@@ -276,8 +276,9 @@ async function logScamCheck(payload) {
         "Content-Type": "text/plain"
       },
       body: JSON.stringify({
-        action: "increment"
-      })
+  action: "increment",
+  source: payload.source || "unknown"
+})
     });
 
     // Log check
