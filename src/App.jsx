@@ -455,6 +455,8 @@ export default function ScamShield() {
   const t = UI_TEXT[language] || UI_TEXT.en;
   const [checkCount, setCheckCount] = useState(0);
   const [feedback, setFeedback] = useState("");
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+  const [checkFeedbackSent, setCheckFeedbackSent] = useState(false);
   const [feedbackSent, setFeedbackSent] = useState(false);
   const [sendingFeedback, setSendingFeedback] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
@@ -488,21 +490,6 @@ async function postToGoogleSheet(payload) {
     },
     body: JSON.stringify(payload)
   });
-}
-
-async function recordCheck({ language, text, verdict, riskScore, scamType }) {
-  await postToGoogleSheet({ action: "increment" });
-
-  await postToGoogleSheet({
-    action: "logCheck",
-    language,
-    text,
-    verdict,
-    riskScore,
-    scamType
-  });
-
-  setCheckCount((current) => current + 1);
 }
 
 async function analyze() {
@@ -556,19 +543,39 @@ async function submitFeedback() {
 
   try {
     await postToGoogleSheet({
-      action: "feedback",
-      feedback
-    });
+  action: "feedback",
+  source: "website",
+  feedback
+});
 
     setFeedback("");
     setFeedbackSent(true);
+    setShowFeedbackForm(false);
   } catch (err) {
     alert("Failed to send feedback.");
   }
 
   setSendingFeedback(false);
 }
+async function submitCheckFeedback(value) {
+  if (!result?.feedbackId) {
+    alert("No feedback ID found for this check.");
+    return;
+  }
 
+  try {
+    await postToGoogleSheet({
+      action: "checkFeedback",
+      feedbackId: result.feedbackId,
+      feedback: value
+    });
+
+    setCheckFeedbackSent(true);
+  } catch (err) {
+    alert("Failed to record feedback.");
+  }
+}
+  
 async function analyzeScreenshot(file) {
   if (!file) return;
 
@@ -631,6 +638,7 @@ function reset() {
   setError("");
   setImagePreview("");
   setScreenshotFileName("");
+  setCheckFeedbackSent(false);
 }
 
   const v = result ? VERDICTS[result.verdict] || VERDICTS["LOOKS SAFE"] : null;
@@ -685,6 +693,26 @@ function reset() {
     >
       📚 {t.learn}
     </button>
+
+    <button
+  onClick={() => {
+  setFeedbackSent(false);
+  setFeedback("");
+  setShowFeedbackForm(true);
+}}
+  style={{
+    background: "rgba(255,255,255,0.06)",
+    color: "#fff",
+    border: "1px solid rgba(255,255,255,0.08)",
+    padding: "10px 16px",
+    borderRadius: 12,
+    fontWeight: 700,
+    cursor: "pointer",
+    fontSize: 13
+  }}
+>
+  💬 Feedback
+</button>
   </div>
 
   {/* RIGHT SIDE */}
@@ -1134,64 +1162,55 @@ function reset() {
                       <div style={{ color: "#7A8FA6", fontSize: 12 }}>CCID Scam Response Centre</div>
                     </div>
                   </div>
+{result.feedbackId && (
+  <div style={{ marginBottom: 14 }}>
+    {!checkFeedbackSent ? (
+      <div style={{ display: "flex", gap: 10 }}>
+        <button
+          onClick={() => submitCheckFeedback("helpful")}
+          style={{
+            flex: 1,
+            padding: 12,
+            borderRadius: 12,
+            border: "none",
+            background: "#34C759",
+            color: "#fff",
+            fontWeight: 800,
+            cursor: "pointer"
+          }}
+        >
+          👍 Helpful
+        </button>
 
+        <button
+          onClick={() => submitCheckFeedback("incorrect")}
+          style={{
+            flex: 1,
+            padding: 12,
+            borderRadius: 12,
+            border: "none",
+            background: "#FF9500",
+            color: "#fff",
+            fontWeight: 800,
+            cursor: "pointer"
+          }}
+        >
+          👎 Incorrect
+        </button>
+      </div>
+    ) : (
+      <div style={{ color: "#34C759", fontWeight: 800, textAlign: "center" }}>
+        ✅ Thanks! Your feedback has been recorded.
+      </div>
+    )}
+  </div>
+)}
                   <button onClick={reset} style={{ width: "100%", padding: "13px 0", borderRadius: 12, fontSize: 14, fontWeight: 700, fontFamily: "inherit", background: "transparent", border: "2px solid rgba(0,0,0,0.12)", color: "#3A3A3C", cursor: "pointer" }}>
                     Check Another Message
                   </button>
                 </div>
               </div>
-
-              <div style={{ marginTop: 18, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: 16 }}>
-                <div style={{ color: "#fff", fontWeight: 800, marginBottom: 6, fontSize: 15 }}>💬 Feedback & Suggestions</div>
-                <div style={{ color: "#7A8FA6", fontSize: 12, lineHeight: 1.6, marginBottom: 12 }}>Help improve ScamShield by sharing feedback or reporting issues.</div>
-
-                <textarea
-  value={feedback}
-  onChange={(e) => setFeedback(e.target.value)}
-  placeholder="Share your feedback..."
-  rows={4}
-  style={{
-    width: "100%",
-    background: "rgba(0,0,0,0.25)",
-    border: "1px solid rgba(255,255,255,0.08)",
-    borderRadius: 12,
-    padding: "12px 14px",
-    color: "#fff",
-    resize: "none",
-    fontSize: 13,
-    outline: "none",
-    boxSizing: "border-box"
-  }}
-/>
-
-               {!feedbackSent ? (
-  <button
-    onClick={submitFeedback}
-    disabled={sendingFeedback || !feedback.trim()}
-    style={{
-      marginTop: 12,
-      display: "inline-block",
-      background: "linear-gradient(135deg,#00C864,#009950)",
-      color: "#fff",
-      border: "none",
-      textDecoration: "none",
-      padding: "10px 16px",
-      borderRadius: 12,
-      fontWeight: 700,
-      fontSize: 13,
-      cursor: sendingFeedback || !feedback.trim() ? "not-allowed" : "pointer",
-      opacity: sendingFeedback || !feedback.trim() ? 0.6 : 1
-    }}
-  >
-    {sendingFeedback ? "Sending..." : "Send Feedback"}
-  </button>
-) : (
-  <div style={{ marginTop: 12, color: "#00C864", fontWeight: 700, fontSize: 13 }}>
-    ✅ Thank you for your feedback!
-  </div>
-)}
-              </div>
-
+    
               <p style={{ textAlign: "center", color: "#3D5166", fontSize: 11, marginTop: 12, lineHeight: 1.6, padding: "0 8px" }}>
                 ScamShield uses AI to assess risk. Results are advisory only. Always report to authorities if you suspect fraud.
               </p>
@@ -1345,6 +1364,88 @@ function reset() {
           {t.disclaimer}
         </button>
       </div>
+      {showFeedbackForm && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      background: "rgba(0,0,0,0.65)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 9999,
+      padding: 20
+    }}
+  >
+    <div
+      style={{
+        background: "#0F1A2A",
+        border: "1px solid rgba(255,255,255,0.12)",
+        borderRadius: 20,
+        padding: 24,
+        width: "100%",
+        maxWidth: 420
+      }}
+    >
+      <h3 style={{ color: "#fff", marginTop: 0 }}>💬 Send Feedback</h3>
+
+      <textarea
+        value={feedback}
+        onChange={(e) => setFeedback(e.target.value)}
+        placeholder="Tell us how ScamShield can improve..."
+        rows={5}
+        style={{
+          width: "100%",
+          background: "rgba(0,0,0,0.3)",
+          border: "1px solid rgba(255,255,255,0.12)",
+          borderRadius: 12,
+          padding: 12,
+          color: "#fff",
+          resize: "none",
+          boxSizing: "border-box"
+        }}
+      />
+
+      {!feedbackSent ? (
+        <button
+          onClick={submitFeedback}
+          disabled={sendingFeedback || !feedback.trim()}
+          style={{
+            width: "100%",
+            marginTop: 12,
+            padding: "12px 0",
+            borderRadius: 12,
+            border: "none",
+            background: "#00C864",
+            color: "#fff",
+            fontWeight: 800,
+            cursor: "pointer"
+          }}
+        >
+          {sendingFeedback ? "Sending..." : "Submit Feedback"}
+        </button>
+      ) : (
+        <div style={{ marginTop: 12, color: "#00C864", fontWeight: 800 }}>
+          ✅ Thank you for your feedback!
+        </div>
+      )}
+
+      <button
+        onClick={() => setShowFeedbackForm(false)}
+        style={{
+          width: "100%",
+          marginTop: 10,
+          background: "transparent",
+          border: "none",
+          color: "#9AAFC5",
+          cursor: "pointer"
+        }}
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
     </div>
   );
 }
