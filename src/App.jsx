@@ -762,9 +762,7 @@ function reset() {
 >
   ✈️ Telegram Bot
 </a>
-      
-  💬 {t.feedbackMenu}
-</button>
+
   </div>
 
   {/* RIGHT SIDE */}
