@@ -4,28 +4,28 @@ const parser = new Parser();
 
 export default async function handler(req, res) {
   try {
-    const feeds = [
-      // English
-      {
-        url:
-          "https://news.google.com/rss/search?q=Malaysia+scam+OR+fraud+OR+phishing&hl=en-MY&gl=MY&ceid=MY:en",
-        language: "en"
-      },
-
-      // Bahasa Melayu
-      {
-        url:
-          "https://news.google.com/rss/search?q=Malaysia+scam+OR+penipuan+OR+phishing&hl=ms&gl=MY&ceid=MY:ms",
-        language: "ms"
-      },
-
-      // Chinese
-      {
-        url:
-          "https://news.google.com/rss/search?q=Malaysia+诈骗+OR+骗局+OR+钓鱼&hl=zh-CN&gl=MY&ceid=MY:zh-Hans",
-        language: "zh"
-      }
-    ];
+const feeds = [
+  {
+    url:
+      "https://news.google.com/rss/search?q=Malaysia+scam+OR+fraud+OR+phishing&hl=en-MY&gl=MY&ceid=MY:en",
+    language: "en"
+  },
+  {
+    url:
+      "https://news.google.com/rss/search?q=Malaysia+scam+OR+penipuan+OR+phishing&hl=ms&gl=MY&ceid=MY:ms",
+    language: "ms"
+  },
+  {
+    url:
+      "https://news.google.com/rss/search?q=马来西亚+诈骗+OR+骗局+OR+网络诈骗+OR+钓鱼诈骗&hl=zh-CN&gl=MY&ceid=MY:zh-CN",
+    language: "zh"
+  },
+  {
+    url:
+      "https://news.google.com/rss/search?q=Malaysia+诈骗+OR+骗局+OR+网络诈骗+OR+钓鱼诈骗&hl=zh-CN&gl=MY&ceid=MY:en",
+    language: "zh"
+  }
+];
 
     const allArticles = [];
 
@@ -51,14 +51,22 @@ export default async function handler(req, res) {
         console.error("Feed failed:", feedInfo.language, err.message);
       }
     }
+    const cutoffDate = new Date();
+cutoffDate.setDate(cutoffDate.getDate() - 7);
 
+const filteredArticles = allArticles.filter((article) => {
+  if (!article.publishedAt) return false;
+
+  return new Date(article.publishedAt) >= cutoffDate;
+});
+    
     // Sort newest first
-    allArticles.sort((a, b) => {
+    filteredArticles.sort((a, b) => {
       return new Date(b.publishedAt) - new Date(a.publishedAt);
     });
 
     return res.status(200).json({
-      articles: allArticles.slice(0, 12)
+      articles: filteredArticles.slice(0, 16)
     });
 
   } catch (err) {
