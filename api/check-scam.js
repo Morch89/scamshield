@@ -201,6 +201,7 @@ export default async function handler(req, res) {
     const textLower = text.toLowerCase();
 
     if (
+      textLower.includes("scamshield-malaysia.vercel.app") ||
       textLower.includes("scamshield-virid.vercel.app") ||
       textLower.includes("scamshield-umj6.vercel.app")
     ) {
