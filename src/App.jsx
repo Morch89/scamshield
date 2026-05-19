@@ -17,21 +17,28 @@ const UI_TEXT = {
     educationSubtitle: "Learn about common scams affecting Malaysians.",
     example: "Example:",
     feature1: "Malaysia-focused",
-feature2: "Instant check",
-feature3: "No login needed",
-feature4: "Official resources",
-
-step1Title: "Paste",
-step1Desc: "Copy the suspicious message or link.",
-
-step2Title: "Analyse",
-step2Desc: "Check for scam warning signs.",
-
-step3Title: "Act",
-step3Desc: "Get clear next steps.",
-uploadScreenshot: "Upload scam screenshot",
-imageWarning: "Screenshot analysis is experimental. Clear screenshots work best. Blurry, cropped or low-quality images may produce inaccurate results. For best accuracy, paste the message text when possible.",
-uploaded: "Uploaded:",
+    feature2: "Instant check",
+    feature3: "No login needed",
+    feature4: "Official resources",
+    step1Title: "Paste",
+    step1Desc: "Copy the suspicious message or link.",
+    step2Title: "Analyse",
+    step2Desc: "Check for scam warning signs.",
+    step3Title: "Act",
+    step3Desc: "Get clear next steps.",
+    uploadScreenshot: "Upload scam screenshot",
+    imageWarning: "Screenshot analysis is experimental. Clear screenshots work best. Blurry, cropped or low-quality images may produce inaccurate results. For best accuracy, paste the message text when possible.",
+    uploaded: "Uploaded:",
+    feedbackMenu: "Feedback",
+feedbackTitle: "Send Feedback",
+feedbackPlaceholder: "Tell us how ScamShield can improve...",
+submitFeedback: "Submit Feedback",
+sendingFeedback: "Sending...",
+feedbackThanks: "✅ Thank you for your feedback!",
+close: "Close",
+helpful: "Helpful",
+incorrect: "Incorrect",
+checkFeedbackThanks: "✅ Thanks! Your feedback has been recorded.",
   },
   ms: {
     home: "Laman Utama",
@@ -61,6 +68,16 @@ step3Desc: "Dapatkan langkah seterusnya.",
     uploadScreenshot: "Muat naik tangkap layar scam",
 imageWarning: "Analisis tangkap layar masih dalam peringkat eksperimen. Imej yang jelas memberikan hasil terbaik. Tangkap layar kabur, terpotong atau berkualiti rendah mungkin menghasilkan keputusan yang kurang tepat. Untuk ketepatan terbaik, tampal teks mesej jika boleh.",
 uploaded: "Dimuat naik:",
+    feedbackMenu: "Maklum Balas",
+feedbackTitle: "Hantar Maklum Balas",
+feedbackPlaceholder: "Beritahu kami bagaimana ScamShield boleh diperbaiki...",
+submitFeedback: "Hantar Maklum Balas",
+sendingFeedback: "Menghantar...",
+feedbackThanks: "✅ Terima kasih atas maklum balas anda!",
+close: "Tutup",
+helpful: "Membantu",
+incorrect: "Tidak Tepat",
+checkFeedbackThanks: "✅ Terima kasih! Maklum balas anda telah direkodkan.",
   },
   zh: {
     home: "主页",
@@ -90,6 +107,16 @@ step3Desc: "获取清晰的下一步建议。",
     uploadScreenshot: "上传诈骗截图",
 imageWarning: "截图分析仍处于实验阶段。清晰截图效果最佳。模糊、裁剪不完整或低质量图片可能导致结果不准确。为了获得更准确的结果，建议尽量粘贴文字内容。",
 uploaded: "已上传：",
+    feedbackMenu: "反馈",
+feedbackTitle: "提交反馈",
+feedbackPlaceholder: "告诉我们 ScamShield 可以如何改进...",
+submitFeedback: "提交反馈",
+sendingFeedback: "发送中...",
+feedbackThanks: "✅ 感谢你的反馈！",
+close: "关闭",
+helpful: "有帮助",
+incorrect: "不准确",
+checkFeedbackThanks: "✅ 谢谢！你的反馈已记录。",
   }
 };
 
@@ -711,7 +738,7 @@ function reset() {
     fontSize: 13
   }}
 >
-  💬 Feedback
+  💬 {t.feedbackMenu}
 </button>
   </div>
 
@@ -1179,7 +1206,7 @@ function reset() {
             cursor: "pointer"
           }}
         >
-          👍 Helpful
+          👍 {t.helpful}
         </button>
 
         <button
@@ -1195,12 +1222,12 @@ function reset() {
             cursor: "pointer"
           }}
         >
-          👎 Incorrect
+          👎 {t.incorrect}
         </button>
       </div>
     ) : (
       <div style={{ color: "#34C759", fontWeight: 800, textAlign: "center" }}>
-        ✅ Thanks! Your feedback has been recorded.
+        {t.checkFeedbackThanks}
       </div>
     )}
   </div>
@@ -1387,12 +1414,12 @@ function reset() {
         maxWidth: 420
       }}
     >
-      <h3 style={{ color: "#fff", marginTop: 0 }}>💬 Send Feedback</h3>
+      <h3 style={{ color: "#fff", marginTop: 0 }}>💬 {t.feedbackTitle}</h3>
 
       <textarea
         value={feedback}
         onChange={(e) => setFeedback(e.target.value)}
-        placeholder="Tell us how ScamShield can improve..."
+        placeholder={t.feedbackPlaceholder}
         rows={5}
         style={{
           width: "100%",
@@ -1422,11 +1449,11 @@ function reset() {
             cursor: "pointer"
           }}
         >
-          {sendingFeedback ? "Sending..." : "Submit Feedback"}
+          {sendingFeedback ? t.sendingFeedback : t.submitFeedback}
         </button>
       ) : (
         <div style={{ marginTop: 12, color: "#00C864", fontWeight: 800 }}>
-          ✅ Thank you for your feedback!
+          {t.feedbackThanks}
         </div>
       )}
 
@@ -1441,7 +1468,7 @@ function reset() {
           cursor: "pointer"
         }}
       >
-        Close
+        {t.close}
       </button>
     </div>
   </div>
