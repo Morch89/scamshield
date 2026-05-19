@@ -262,6 +262,40 @@ if (/(bit\.ly|tinyurl\.com|t\.co|goo\.gl|lihi\.cc|shorturl\.at|cutt\.ly)/i.test(
     ruleSignals: signals
   };
 }
+async function logScamCheck(payload) {
+  if (!process.env.LOG_WEBHOOK_URL) {
+    console.error("LOG_WEBHOOK_URL is missing.");
+    return;
+  }
+
+  try {
+    // Increment counter
+    await fetch(process.env.LOG_WEBHOOK_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain"
+      },
+      body: JSON.stringify({
+        action: "increment"
+      })
+    });
+
+    // Log check
+    await fetch(process.env.LOG_WEBHOOK_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain"
+      },
+      body: JSON.stringify({
+        action: "logCheck",
+        ...payload
+      })
+    });
+  } catch (err) {
+    console.error("Google Sheets logging failed:", err.message);
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({
@@ -499,29 +533,19 @@ if (finalScore >= 75) {
 } else {
   parsed.verdict = "LOOKS SAFE";
 }
-try {
-  await fetch(process.env.LOG_WEBHOOK_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      timestamp: new Date().toISOString(),
-      source: req.body.source || "website",
-      language,
-      input: text || ocrData?.extractedText || null,
-      verdict: parsed.verdict,
-      riskScore: parsed.riskScore,
-      confidence: parsed.confidence || null,
-      scamType: parsed.scamType || null,
-      scamFamily: parsed.scamFamily || null,
-      targetBrand: parsed.targetBrand || null,
-      userRisk: parsed.userRisk || null
-    })
-  });
-} catch (err) {
-  console.error("Logging failed:", err.message);
-}
+await logScamCheck({
+  timestamp: new Date().toISOString(),
+  source: req.body.source || "website",
+  language,
+  text,
+  verdict: parsed.verdict,
+  riskScore: parsed.riskScore,
+  scamType: parsed.scamType || null,
+  confidence: parsed.confidence || null,
+  scamFamily: parsed.scamFamily || null,
+  targetBrand: parsed.targetBrand || null,
+  userRisk: parsed.userRisk || null
+});
 return res.status(200).json(parsed);
   } catch (err) {
     return res.status(500).json({
