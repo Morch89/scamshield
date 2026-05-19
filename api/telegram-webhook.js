@@ -35,17 +35,33 @@ if (callbackQuery) {
     });
 
     await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/answerCallbackQuery`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        callback_query_id: callbackQuery.id,
-        text: "Thanks! Feedback recorded."
-      })
-    });
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    callback_query_id: callbackQuery.id,
+    text: "Thanks! Feedback recorded."
+  })
+});
 
-    return res.status(200).json({ ok: true });
+const responseText =
+  feedback === "helpful"
+    ? "✅ Thanks! Glad ScamShield was helpful."
+    : "🙏 Thanks for the feedback. We’ll use this to improve ScamShield’s detection accuracy.";
+
+await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    chat_id,
+    text: responseText
+  })
+});
+
+return res.status(200).json({ ok: true });
   }
 
   return res.status(200).json({ ok: true });
