@@ -29,6 +29,9 @@ step2Desc: "Check for scam warning signs.",
 
 step3Title: "Act",
 step3Desc: "Get clear next steps.",
+uploadScreenshot: "Upload scam screenshot",
+imageWarning: "Screenshot analysis is experimental. Clear screenshots work best. Blurry, cropped or low-quality images may produce inaccurate results. For best accuracy, paste the message text when possible.",
+uploaded: "Uploaded:",
   },
   ms: {
     home: "Laman Utama",
@@ -49,15 +52,15 @@ step3Desc: "Get clear next steps.",
 feature2: "Semakan segera",
 feature3: "Tiada login diperlukan",
 feature4: "Sumber rasmi",
-
 step1Title: "Tampal",
 step1Desc: "Salin mesej atau pautan mencurigakan.",
-
 step2Title: "Analisis",
 step2Desc: "Semak tanda amaran scam.",
-
 step3Title: "Bertindak",
 step3Desc: "Dapatkan langkah seterusnya.",
+    uploadScreenshot: "Muat naik tangkap layar scam",
+imageWarning: "Analisis tangkap layar masih dalam peringkat eksperimen. Imej yang jelas memberikan hasil terbaik. Tangkap layar kabur, terpotong atau berkualiti rendah mungkin menghasilkan keputusan yang kurang tepat. Untuk ketepatan terbaik, tampal teks mesej jika boleh.",
+uploaded: "Dimuat naik:",
   },
   zh: {
     home: "主页",
@@ -78,15 +81,15 @@ step3Desc: "Dapatkan langkah seterusnya.",
 feature2: "即时检测",
 feature3: "无需登录",
 feature4: "官方资源",
-
 step1Title: "粘贴",
 step1Desc: "复制可疑信息或链接。",
-
 step2Title: "分析",
 step2Desc: "检查诈骗风险迹象。",
-
 step3Title: "行动",
 step3Desc: "获取清晰的下一步建议。",
+    uploadScreenshot: "上传诈骗截图",
+imageWarning: "截图分析仍处于实验阶段。清晰截图效果最佳。模糊、裁剪不完整或低质量图片可能导致结果不准确。为了获得更准确的结果，建议尽量粘贴文字内容。",
+uploaded: "已上传：",
   }
 };
 
@@ -838,7 +841,7 @@ function reset() {
       background: "rgba(0,200,100,0.06)"
     }}
   >
-    📷 Upload scam screenshot
+    📷 {t.uploadScreenshot}
     <input
       type="file"
       accept="image/*"
@@ -850,7 +853,7 @@ function reset() {
 
 {imagePreview && !result && (
   <div style={{ marginTop: 12, color: "#7A8FA6", fontSize: 12 }}>
-    Uploaded: {screenshotFileName}
+    {t.uploaded}: {screenshotFileName}
   </div>
 )}
               {error && (
