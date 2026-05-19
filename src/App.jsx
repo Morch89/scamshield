@@ -738,6 +738,28 @@ function reset() {
     fontSize: 13
   }}
 >
+      <a
+  href="https://t.me/ScamShieldMalaysiaBot"
+  target="_blank"
+  rel="noopener noreferrer"
+  style={{
+    background: "linear-gradient(135deg,#229ED9,#1B8BC3)",
+    color: "#fff",
+    border: "1px solid rgba(255,255,255,0.08)",
+    padding: "10px 16px",
+    borderRadius: 12,
+    fontWeight: 700,
+    cursor: "pointer",
+    fontSize: 13,
+    textDecoration: "none",
+    display: "flex",
+    alignItems: "center",
+    gap: 8
+  }}
+>
+  ✈️ Telegram Bot
+</a>
+      
   💬 {t.feedbackMenu}
 </button>
   </div>
@@ -1232,6 +1254,43 @@ function reset() {
     )}
   </div>
 )}
+                  <div
+  style={{
+    marginBottom: 16,
+    background: "rgba(34,158,217,0.08)",
+    border: "1px solid rgba(34,158,217,0.25)",
+    borderRadius: 14,
+    padding: 16,
+    textAlign: "center"
+  }}
+>
+  <div
+    style={{
+      color: "#D7F2FF",
+      fontWeight: 700,
+      marginBottom: 10
+    }}
+  >
+    ✈️ Want instant scam checks directly in Telegram?
+  </div>
+
+  <a
+    href="https://t.me/ScamShieldMalaysiaBot"
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{
+      display: "inline-block",
+      background: "#229ED9",
+      color: "#fff",
+      padding: "12px 18px",
+      borderRadius: 12,
+      fontWeight: 800,
+      textDecoration: "none"
+    }}
+  >
+    Open ScamShield Telegram Bot
+  </a>
+</div>
                   <button onClick={reset} style={{ width: "100%", padding: "13px 0", borderRadius: 12, fontSize: 14, fontWeight: 700, fontFamily: "inherit", background: "transparent", border: "2px solid rgba(0,0,0,0.12)", color: "#3A3A3C", cursor: "pointer" }}>
                     Check Another Message
                   </button>
