@@ -74,7 +74,53 @@ return res.status(200).json({ ok: true });
     const chat_id = message?.chat?.id;
 
     const command = incomingText?.trim().toLowerCase();
+if (command?.startsWith("/feedback")) {
+  const feedbackText = incomingText.replace(/^\/feedback/i, "").trim();
 
+  if (!feedbackText) {
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        chat_id,
+        text: `
+💬 Send feedback like this:
+
+/feedback The bot was useful but the explanation was too long.
+`
+      })
+    });
+
+    return res.status(200).json({ ok: true });
+  }
+
+  await fetch(process.env.LOG_WEBHOOK_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain"
+    },
+    body: JSON.stringify({
+      action: "feedback",
+      source: "telegram",
+      feedback: feedbackText
+    })
+  });
+
+  await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      chat_id,
+      text: "✅ Thanks! Your general feedback has been recorded."
+    })
+  });
+
+  return res.status(200).json({ ok: true });
+}
     if (command === "/start") {
       await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: "POST",
