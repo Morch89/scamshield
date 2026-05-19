@@ -16,6 +16,19 @@ const UI_TEXT = {
     educationTitle: "Scam Education Centre",
     educationSubtitle: "Learn about common scams affecting Malaysians.",
     example: "Example:"
+    feature1: "Malaysia-focused",
+feature2: "Instant check",
+feature3: "No login needed",
+feature4: "Official resources",
+
+step1Title: "Paste",
+step1Desc: "Copy the suspicious message or link.",
+
+step2Title: "Analyse",
+step2Desc: "Check for scam warning signs.",
+
+step3Title: "Act",
+step3Desc: "Get clear next steps.",
   },
   ms: {
     home: "Laman Utama",
@@ -32,6 +45,19 @@ const UI_TEXT = {
     educationTitle: "Pusat Pendidikan Scam",
     educationSubtitle: "Ketahui jenis scam biasa yang menyasarkan rakyat Malaysia.",
     example: "Contoh:"
+  feature1: "Fokus Malaysia",
+feature2: "Semakan segera",
+feature3: "Tiada login diperlukan",
+feature4: "Sumber rasmi",
+
+step1Title: "Tampal",
+step1Desc: "Salin mesej atau pautan mencurigakan.",
+
+step2Title: "Analisis",
+step2Desc: "Semak tanda amaran scam.",
+
+step3Title: "Bertindak",
+step3Desc: "Dapatkan langkah seterusnya.",
   },
   zh: {
     home: "主页",
@@ -48,6 +74,19 @@ const UI_TEXT = {
     educationTitle: "诈骗教育中心",
     educationSubtitle: "了解常见的马来西亚诈骗类型。",
     example: "例子："
+    feature1: "马来西亚专属",
+feature2: "即时检测",
+feature3: "无需登录",
+feature4: "官方资源",
+
+step1Title: "粘贴",
+step1Desc: "复制可疑信息或链接。",
+
+step2Title: "分析",
+step2Desc: "检查诈骗风险迹象。",
+
+step3Title: "行动",
+step3Desc: "获取清晰的下一步建议。",
   }
 };
 
@@ -610,28 +649,101 @@ async function submitFeedback() {
         </p>
 
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20 }}>
-          {["🇲🇾 Malaysia-focused", "⚡ Instant check", "🔒 No login needed", "🏛️ Official resources"].map((item, i) => (
-            <span key={i} style={{ background: "rgba(0,200,100,0.12)", color: "#B8FFD8", border: "1px solid rgba(0,200,100,0.25)", borderRadius: 999, padding: "7px 11px", fontSize: 12, fontWeight: 700 }}>
-              {item}
-            </span>
-          ))}
+          {[
+  { icon: "🇲🇾", text: t.feature1 },
+  { icon: "⚡", text: t.feature2 },
+  { icon: "🔒", text: t.feature3 },
+  { icon: "🏛", text: t.feature4 }
+].map((item, i) => (
+  <div
+    key={i}
+    style={{
+      background: "rgba(0,200,100,0.08)",
+      border: "1px solid rgba(0,200,100,0.28)",
+      color: "#D9FFE8",
+      padding: "10px 14px",
+      borderRadius: 999,
+      fontSize: 13,
+      fontWeight: 700,
+      display: "flex",
+      alignItems: "center",
+      gap: 8
+    }}
+  >
+    <span>{item.icon}</span>
+    <span>{item.text}</span>
+  </div>
+))}
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10, marginBottom: 6 }}>
-          {[
-            ["1", "Paste", "Copy the suspicious message or link."],
-            ["2", "Analyse", "Check for scam warning signs."],
-            ["3", "Act", "Get clear next steps."]
-          ].map((step, i) => (
-            <div key={i} style={{ background: "rgba(255,255,255,0.055)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, padding: 13 }}>
-              <div style={{ width: 24, height: 24, borderRadius: "50%", background: "#00C864", color: "#001A0B", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 12, marginBottom: 8 }}>
-                {step[0]}
-              </div>
+         [
+  {
+    number: "1",
+    title: t.step1Title,
+    desc: t.step1Desc
+  },
+  {
+    number: "2",
+    title: t.step2Title,
+    desc: t.step2Desc
+  },
+  {
+    number: "3",
+    title: t.step3Title,
+    desc: t.step3Desc
+  }
+].map((card, i) => (
+  <div
+    key={i}
+    style={{
+      flex: 1,
+      background: "rgba(255,255,255,0.04)",
+      border: "1px solid rgba(255,255,255,0.08)",
+      borderRadius: 20,
+      padding: 24,
+      minWidth: 180
+    }}
+  >
+    <div
+      style={{
+        width: 28,
+        height: 28,
+        borderRadius: "50%",
+        background: "#00C864",
+        color: "#001B09",
+        fontWeight: 800,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: 18
+      }}
+    >
+      {card.number}
+    </div>
 
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: 13 }}>{step[1]}</div>
-              <div style={{ color: "#7A8FA6", fontSize: 11, lineHeight: 1.5, marginTop: 4 }}>{step[2]}</div>
-            </div>
-          ))}
+    <div
+      style={{
+        color: "#fff",
+        fontWeight: 800,
+        fontSize: 16,
+        marginBottom: 6
+      }}
+    >
+      {card.title}
+    </div>
+
+    <div
+      style={{
+        color: "#8FA5BC",
+        fontSize: 14,
+        lineHeight: 1.6
+      }}
+    >
+      {card.desc}
+    </div>
+  </div>
+))
         </div>
       </div>
 
