@@ -12,8 +12,9 @@ export default async function handler(req, res) {
     const incomingText = req.body?.message?.text;
     const chat_id = req.body?.message?.chat?.id;
     
-if (incomingText === "/start") {
+const command = incomingText?.trim().toLowerCase();
 
+if (command === "/start") {
   await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
     method: "POST",
     headers: {
@@ -29,25 +30,69 @@ Send me:
 • suspicious links
 • scam screenshots
 
-I will analyse them for:
-✅ phishing
-✅ fake parcel scams
-✅ OTP scams
-✅ fake bank alerts
-✅ investment scams
-✅ malware/APK scams
-
-Example:
-"Your parcel is suspended. Click here to update."
-
-⚠ ScamShield is an AI assistant and should not replace official police or bank advice.
+I will analyse them instantly using AI + scam intelligence.
 `
     })
   });
 
-  return res.status(200).json({
-    ok: true
+  return res.status(200).json({ ok: true });
+}
+
+if (command === "/help") {
+  await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      chat_id,
+      text: `
+📖 ScamShield Help
+
+Send:
+• suspicious SMS
+• suspicious WhatsApp messages
+• suspicious URLs
+• scam screenshots
+
+Examples:
+• fake parcel scams
+• OTP scams
+• investment scams
+• fake bank alerts
+
+ScamShield will analyse the message and estimate scam risk.
+`
+    })
   });
+
+  return res.status(200).json({ ok: true });
+}
+
+if (command === "/privacy") {
+  await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      chat_id,
+      text: `
+🔒 Privacy
+
+ScamShield analyses submitted messages and screenshots for scam detection purposes.
+
+Avoid sending:
+• passwords
+• banking PINs
+• full IC/passport numbers
+
+ScamShield is an AI assistant and may not always be accurate.
+`
+    })
+  });
+
+  return res.status(200).json({ ok: true });
 }
     if (!chat_id) {
       return res.status(200).json({
