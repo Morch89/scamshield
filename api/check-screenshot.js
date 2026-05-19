@@ -15,9 +15,9 @@ function safeJsonParse(raw) {
 
 function getLanguageInstruction(language) {
   const instructions = {
-    en: "Write all user-facing JSON values in English.",
-    ms: "Write all user-facing JSON values in Bahasa Melayu.",
-    zh: "Write all user-facing JSON values in Simplified Chinese."
+    en: "Extract all visible text exactly as shown. Use English labels only.",
+    ms: "Extract all visible text exactly as shown. Use Bahasa Melayu labels where needed.",
+    zh: "Extract all visible text exactly as shown. Use Simplified Chinese labels where needed."
   };
 
   return instructions[language] || instructions.en;
@@ -56,43 +56,30 @@ export default async function handler(req, res) {
                 text: `
 You are ScamShield Malaysia.
 
-Analyze this uploaded screenshot for scam indicators.
+Extract scam-checking information from this screenshot.
+Do NOT decide the scam verdict here.
+Only extract readable evidence.
 
 ${languageInstruction}
 
 Important:
-- Read the visible text in the screenshot.
-- Identify whether it looks like a scam, possible scam, or looks safe.
-- If text is blurry or incomplete, say so in the summary.
+- Read all visible text in the screenshot.
+- Preserve URLs exactly if visible.
+- Extract phone numbers if visible.
+- Extract bank names, wallet names, courier names, government agency names, and platform names if visible.
+- Extract suspicious keywords such as OTP, TAC, verify, claim, reward, suspended, parcel, investment, job, loan, APK, login, password.
+- If the screenshot is blurry or incomplete, lower the ocrConfidence.
 - JSON keys must remain in English.
-- The verdict value must be exactly one of:
-  "LIKELY SCAM", "POSSIBLE SCAM", "LOOKS SAFE"
 
 Return ONLY valid raw JSON:
 {
-  "verdict": "LIKELY SCAM" or "POSSIBLE SCAM" or "LOOKS SAFE",
-  "riskScore": number 0-100,
-  "summary": "1-2 sentence summary",
-  "redFlags": ["flag1", "flag2"],
-  "whatToDo": ["action1", "action2"],
-  "scamType": "type of scam or null",
-  "officialLinks": [{"label":"label","url":"url"}]
+  "extractedText": "all readable text from the screenshot",
+  "urls": ["url1", "url2"],
+  "phones": ["phone1", "phone2"],
+  "brands": ["brand1", "brand2"],
+  "keywords": ["keyword1", "keyword2"],
+  "ocrConfidence": number 0-100
 }
-
-Use Malaysian context where relevant:
-- OTP scams
-- parcel scams
-- fake investment schemes
-- fake bank alerts
-- Macau scams
-- fake job scams
-- e-wallet scams
-
-Relevant official resources:
-- PDRM: https://www.rmp.gov.my/
-- BNM: https://www.bnm.gov.my/
-- MCMC: https://aduan.skmm.gov.my/
-- Semak Mule: https://semakmule.rmp.gov.my/
 `
               },
               {
@@ -111,17 +98,74 @@ Relevant official resources:
 
     if (!response.ok) {
       return res.status(response.status).json({
-        error: data.error?.message || "Screenshot analysis failed."
+        error: data.error?.message || "Screenshot OCR failed."
       });
     }
 
     const raw = data.choices?.[0]?.message?.content;
+
     if (!raw) {
-      return res.status(500).json({ error: "No response returned from vision model." });
+      return res.status(500).json({
+        error: "No response returned from vision model."
+      });
     }
 
-    const parsed = safeJsonParse(raw);
-    return res.status(200).json(parsed);
+    const ocrData = safeJsonParse(raw);
+
+    if (!ocrData.extractedText || ocrData.extractedText.trim().length < 5) {
+      return res.status(200).json({
+        source: "screenshot",
+        ocrData: {
+          extractedText: "",
+          urls: [],
+          phones: [],
+          brands: [],
+          keywords: [],
+          ocrConfidence: 0
+        },
+        result: {
+          verdict: "POSSIBLE SCAM",
+          riskScore: 50,
+          summary: "The screenshot text could not be read clearly enough for a reliable analysis.",
+          redFlags: ["Screenshot text is unclear or incomplete"],
+          whatToDo: ["Upload a clearer screenshot or paste the message text directly."],
+          scamType: null,
+          officialLinks: []
+        }
+      });
+    }
+
+    const baseUrl =
+      process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : req.headers.origin;
+
+    const scamResponse = await fetch(`${baseUrl}/api/check-scam`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        text: ocrData.extractedText,
+        language,
+        source: "screenshot"
+      })
+    });
+
+    const scamData = await scamResponse.json();
+
+    if (!scamResponse.ok) {
+      return res.status(scamResponse.status).json({
+        error: scamData.error || "Scam check failed after OCR.",
+        ocrData
+      });
+    }
+
+    return res.status(200).json({
+      source: "screenshot",
+      ocrData,
+      result: scamData
+    });
 
   } catch (err) {
     return res.status(500).json({ error: err.message });
