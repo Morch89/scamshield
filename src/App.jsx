@@ -1267,9 +1267,10 @@ function reset() {
 >
   <div
     style={{
-      color: "#D7F2FF",
-      fontWeight: 700,
-      marginBottom: 10
+      color: "#FFFFFF",
+      fontWeight: 800,
+      marginBottom: 10,
+      fontSize: 15
     }}
   >
     ✈️ Want instant scam checks directly in Telegram?
@@ -1280,14 +1281,15 @@ function reset() {
     target="_blank"
     rel="noopener noreferrer"
     style={{
-      display: "inline-block",
-      background: "#229ED9",
-      color: "#fff",
-      padding: "12px 18px",
-      borderRadius: 12,
-      fontWeight: 800,
-      textDecoration: "none"
-    }}
+  display: "inline-block",
+  background: "#229ED9",
+  color: "#FFFFFF",
+  padding: "12px 18px",
+  borderRadius: 12,
+  fontWeight: 800,
+  textDecoration: "none",
+  boxShadow: "0 4px 16px rgba(34,158,217,0.35)"
+}}
   >
     Open ScamShield Telegram Bot
   </a>
