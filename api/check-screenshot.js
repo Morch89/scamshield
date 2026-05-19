@@ -132,7 +132,7 @@ if (!ocrData.extractedText || ocrData.extractedText.trim().length < 5) {
     whatToDo: ["Upload a clearer screenshot or paste the message text directly."],
     scamType: null,
     officialLinks: [],
-    source: "screenshot",
+    source: req.body.source || "screenshot",
     ocrData
   });
 }
@@ -164,10 +164,10 @@ const scamResponse = await fetch(`${baseUrl}/api/check-scam`, {
     "Content-Type": "application/json"
   },
   body: JSON.stringify({
-    text: combinedText,
-    language,
-    source: "screenshot"
-  })
+  text: combinedText,
+  language,
+  source: req.body.source || "screenshot"
+})
 });
 
 const scamRaw = await scamResponse.text();
