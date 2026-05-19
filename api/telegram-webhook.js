@@ -161,9 +161,10 @@ if (photos && photos.length > 0) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        imageBase64,
-        language: "en"
-      })
+  imageBase64,
+  language: "en",
+  source: "telegram"
+})
     }
   );
 
