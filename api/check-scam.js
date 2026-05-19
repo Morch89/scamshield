@@ -13,13 +13,17 @@ export default async function handler(req, res) {
     }
 
     const languageInstruction = {
-  en: "Write all user-facing values in English.",
-  ms: "Write all user-facing values in Bahasa Melayu.",
-  zh: "Write all user-facing values in Simplified Chinese. JSON keys must stay in English."
-}[language] || "Write all user-facing values in English.";
+  en: "OUTPUT LANGUAGE: English. All user-facing JSON values must be in English only.",
+  ms: "OUTPUT LANGUAGE: Bahasa Melayu. All user-facing JSON values must be in Bahasa Melayu only.",
+  zh: "OUTPUT LANGUAGE: Simplified Chinese. All user-facing JSON values must be in Simplified Chinese only."
+}[language] || "OUTPUT LANGUAGE: English. All user-facing JSON values must be in English only.";
 
     const systemPrompt = `
 You are ScamShield Malaysia, a scam detection assistant for Malaysian users.
+Important:
+The selected output language overrides the input message language.
+If the suspicious message is in English but selected language is zh, respond in Simplified Chinese.
+If the suspicious message is in English but selected language is ms, respond in Bahasa Melayu.
 
 ${languageInstruction}
 
@@ -75,16 +79,29 @@ Use only these official Malaysian resources when relevant:
         model: "llama-3.1-8b-instant",
         temperature: 0,
         max_completion_tokens: 900,
-        messages: [
-          {
-            role: "system",
-            content: systemPrompt
-          },
-          {
-            role: "user",
-            content: `Analyze this message:\n\n${text}`
-          }
-        ]
+       messages: [
+  {
+    role: "system",
+    content: systemPrompt
+  },
+  {
+    role: "user",
+    content: `
+SELECTED_OUTPUT_LANGUAGE: ${language}
+
+Language rules:
+- If SELECTED_OUTPUT_LANGUAGE is "en", all user-facing JSON values must be English.
+- If SELECTED_OUTPUT_LANGUAGE is "ms", all user-facing JSON values must be Bahasa Melayu.
+- If SELECTED_OUTPUT_LANGUAGE is "zh", all user-facing JSON values must be Simplified Chinese.
+- Ignore the language of the suspicious message.
+- Do not translate the JSON keys.
+- Only translate JSON values.
+
+Suspicious message to analyse:
+${text}
+`
+  }
+]
       })
     });
 
