@@ -334,7 +334,7 @@ async function submitFeedback() {
             </button>
 
             <button onClick={() => setPage("learn")} style={{ background: page === "learn" ? "linear-gradient(135deg,#00C864,#009950)" : "rgba(255,255,255,0.06)", color: "#fff", border: "1px solid rgba(255,255,255,0.08)", padding: "10px 16px", borderRadius: 12, fontWeight: 700, cursor: "pointer", fontSize: 13 }}>
-              📚 {t.Learn}
+              📚 {t.learn}
             </button>
           </div>
         </div>
@@ -352,7 +352,7 @@ async function submitFeedback() {
         </h1>
 
         <p style={{ color: "#9AAFC5", fontSize: 15, margin: "0 0 18px", lineHeight: 1.7 }}>
-          ScamShield Malaysia helps you check suspicious SMS, WhatsApp messages, bank alerts, parcel links, OTP requests, and fake prize claims.
+          {t.subtitle}
         </p>
 
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20 }}>
@@ -394,7 +394,7 @@ async function submitFeedback() {
       marginBottom: 6
     }}
   >
-    Response Language
+    {t.responseLanguage}
   </label>
 
   <select
@@ -431,7 +431,7 @@ async function submitFeedback() {
               )}
 
               <button onClick={analyze} disabled={loading || !text.trim()} style={{ width: "100%", marginTop: 14, padding: "15px 0", borderRadius: 12, fontSize: 15, fontWeight: 800, fontFamily: "inherit", border: "none", background: text.trim() && !loading ? "linear-gradient(135deg,#00C864,#009950)" : "rgba(0,200,100,0.2)", color: "#fff", cursor: text.trim() && !loading ? "pointer" : "not-allowed", boxShadow: text.trim() && !loading ? "0 4px 20px rgba(0,200,100,0.3)" : "none" }}>
-                {loading ? t.Analysing: t.checkbutton}
+                {loading ? t.analysing : t.checkButton}
               </button>
 
               <div style={{ marginTop: 14, display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
@@ -439,7 +439,7 @@ async function submitFeedback() {
                   <span style={{ fontSize: 20 }}>📊</span>
                   <div>
                     <div style={{ color: "#fff", fontSize: 16, fontWeight: 800 }}>{checkCount.toLocaleString()}</div>
-                    <div style={{ color: "#7A8FA6", fontSize: 11 }}>Scam checks performed</div>
+                    <div style={{ color: "#7A8FA6", fontSize: 11 }}>{t.counter}</div>
                   </div>
                 </div>
               </div>
@@ -524,7 +524,24 @@ async function submitFeedback() {
                 <div style={{ color: "#fff", fontWeight: 800, marginBottom: 6, fontSize: 15 }}>💬 Feedback & Suggestions</div>
                 <div style={{ color: "#7A8FA6", fontSize: 12, lineHeight: 1.6, marginBottom: 12 }}>Help improve ScamShield by sharing feedback or reporting issues.</div>
 
-                <textarea value={feedback} onChange={(e) => setFeedback(e.target.value)} placeholder=rgba(0,0,0,0.25)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "12px 14px", color: "#fff", resize: "none", fontSize: 13, outline: "none", boxSizing: "border-box" }} />
+                <textarea
+  value={feedback}
+  onChange={(e) => setFeedback(e.target.value)}
+  placeholder="Share your feedback..."
+  rows={4}
+  style={{
+    width: "100%",
+    background: "rgba(0,0,0,0.25)",
+    border: "1px solid rgba(255,255,255,0.08)",
+    borderRadius: 12,
+    padding: "12px 14px",
+    color: "#fff",
+    resize: "none",
+    fontSize: 13,
+    outline: "none",
+    boxSizing: "border-box"
+  }}
+/>
 
                {!feedbackSent ? (
   <button
@@ -605,7 +622,7 @@ async function submitFeedback() {
             fontSize: 14
           }}>
             <h2 style={{ color: "#fff", fontSize: 30, marginBottom: 8 }}>
-              Privacy Policy
+              {t.privacy}
             </h2>
 
             <p>
@@ -652,7 +669,7 @@ async function submitFeedback() {
             fontSize: 14
           }}>
             <h2 style={{ color: "#fff", fontSize: 30, marginBottom: 8 }}>
-              Disclaimer
+              {t.disclaimer}
             </h2>
 
             <p>
