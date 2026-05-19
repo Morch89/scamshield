@@ -28,7 +28,7 @@ export default async function handler(req, res) {
       // =========================
       {
         url:
-          "https://rsshub.app/sinchew/tag/%E8%AF%88%E9%AA%97",
+          "https://rsshub.rssforever.com/sinchew/tag/%E8%AF%88%E9%AA%97",
         language: "zh"
       }
     ];
