@@ -13,10 +13,21 @@ export default async function handler(req, res) {
     }
 
     const languageInstruction = {
-      en: "Respond in English.",
-      ms: "Respond in Bahasa Melayu.",
-      zh: "Respond in Simplified Chinese."
-    }[language] || "Respond in English.";
+  en: `
+You MUST write all user-facing response values in English.
+Even if the input message is Malay, Chinese, or mixed language, the output values must be English.
+`,
+  ms: `
+You MUST write all user-facing response values in Bahasa Melayu.
+Even if the input message is English, Chinese, or mixed language, the output values must be Bahasa Melayu.
+`,
+  zh: `
+You MUST write all user-facing response values in Simplified Chinese.
+Even if the input message is English, Malay, or mixed language, the output values must be Simplified Chinese.
+`
+}[language] || `
+You MUST write all user-facing response values in English.
+`;
 
     const systemPrompt = `
 You are ScamShield Malaysia, a scam detection assistant for Malaysian users.
@@ -38,7 +49,14 @@ Return ONLY valid raw JSON.
 Do not use markdown.
 Do not use backticks.
 The JSON keys must remain in English.
-Only translate the values for summary, redFlags, whatToDo, and scamType.
+Only these JSON values must follow the selected language:
+- summary
+- redFlags
+- whatToDo
+- scamType
+- officialLinks.label
+
+Do not follow the input message language. Follow the selected language only.
 
 Required JSON format:
 {
@@ -66,7 +84,7 @@ Use only these official Malaysian resources when relevant:
       },
       body: JSON.stringify({
         model: "llama-3.1-8b-instant",
-        temperature: 0.2,
+        temperature: 0,
         max_completion_tokens: 900,
         response_format: { type: "json_object" },
         messages: [
