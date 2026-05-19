@@ -1417,14 +1417,17 @@ function reset() {
         </div>
       )}
 
-      {!newsLoading && newsArticles.length === 0 && (
+      {!newsLoading &&
+  newsArticles.filter((article) => article.language === language).length === 0 && (
         <div style={{ color: "#9AAFC5", fontSize: 13 }}>
           {t.newsEmpty}
         </div>
       )}
 
       {!newsLoading &&
-        newsArticles.map((article, i) => (
+  newsArticles
+    .filter((article) => article.language === language)
+    .map((article, i) => (
           <a
             key={i}
             href={article.url}
