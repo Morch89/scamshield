@@ -97,7 +97,7 @@ const feeds = [
     )}&hl=zh-CN&gl=MY&ceid=MY:zh-CN`,
   language: "zh"
 }
-
+];
     const allArticles = [];
 
     for (const feedInfo of feeds) {
