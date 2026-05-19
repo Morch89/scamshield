@@ -923,7 +923,183 @@ function reset() {
                       <span style={{ display: "inline-block", background: v.bg, color: "#fff", borderRadius: 20, padding: "4px 16px", fontSize: 12, fontWeight: 700 }}>{result.scamType}</span>
                     </div>
                   )}
+                  {(result.confidence || result.targetBrand || result.userRisk || result.scamFamily) && (
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit,minmax(140px,1fr))",
+      gap: 10,
+      marginBottom: 18
+    }}
+  >
+    {result.confidence && (
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: 12,
+          padding: 14,
+          textAlign: "center"
+        }}
+      >
+        <div
+          style={{
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: "0.08em",
+            color: "#8E8E93",
+            marginBottom: 4
+          }}
+        >
+          CONFIDENCE
+        </div>
 
+        <div
+          style={{
+            fontSize: 20,
+            fontWeight: 800,
+            color: v.text
+          }}
+        >
+          {result.confidence}%
+        </div>
+      </div>
+    )}
+
+    {result.scamFamily && (
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: 12,
+          padding: 14,
+          textAlign: "center"
+        }}
+      >
+        <div
+          style={{
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: "0.08em",
+            color: "#8E8E93",
+            marginBottom: 4
+          }}
+        >
+          CATEGORY
+        </div>
+
+        <div
+          style={{
+            fontSize: 13,
+            fontWeight: 700,
+            color: "#111"
+          }}
+        >
+          {result.scamFamily}
+        </div>
+      </div>
+    )}
+
+    {result.targetBrand && (
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: 12,
+          padding: 14,
+          textAlign: "center"
+        }}
+      >
+        <div
+          style={{
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: "0.08em",
+            color: "#8E8E93",
+            marginBottom: 4
+          }}
+        >
+          TARGET BRAND
+        </div>
+
+        <div
+          style={{
+            fontSize: 13,
+            fontWeight: 700,
+            color: "#111"
+          }}
+        >
+          {result.targetBrand}
+        </div>
+      </div>
+    )}
+
+    {result.userRisk && (
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: 12,
+          padding: 14,
+          textAlign: "center"
+        }}
+      >
+        <div
+          style={{
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: "0.08em",
+            color: "#8E8E93",
+            marginBottom: 4
+          }}
+        >
+          USER RISK
+        </div>
+
+        <div
+          style={{
+            fontSize: 13,
+            fontWeight: 700,
+            color: "#111"
+          }}
+        >
+          {result.userRisk}
+        </div>
+      </div>
+    )}
+  </div>
+)}
+
+{result.confidenceReason && (
+  <div
+    style={{
+      background: "#fff",
+      borderRadius: 12,
+      padding: 16,
+      marginBottom: 14
+    }}
+  >
+    <div
+      style={{
+        fontSize: 10,
+        fontWeight: 700,
+        color: v.text,
+        letterSpacing: "0.1em",
+        marginBottom: 6,
+        textAlign: "center"
+      }}
+    >
+      CONFIDENCE REASON
+    </div>
+
+    <div
+      style={{
+        color: "#222",
+        fontSize: 14,
+        lineHeight: 1.7,
+        textAlign: "center"
+      }}
+    >
+      {result.confidenceReason}
+    </div>
+  </div>
+)}
                   <div style={{ background: "#fff", borderRadius: 12, padding: 16, marginBottom: 14 }}>
                     <div style={{ fontSize: 10, fontWeight: 700, color: v.text, letterSpacing: "0.1em", marginBottom: 6 }}>SUMMARY</div>
                     <p style={{ margin: 0, fontSize: 15, color: "#1C1C1E", lineHeight: 1.65, fontWeight: 500 }}>{result.summary}</p>
