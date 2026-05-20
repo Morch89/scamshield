@@ -716,7 +716,38 @@ try {
 
   setLoading(false);
 }
+  
+function buildShareText() {
+  if (!result) return "";
 
+  return `🛡 ScamShield Malaysia
+
+Verdict: ${result.verdict}
+Risk Score: ${result.riskScore}/100
+
+Summary:
+${result.summary}
+
+⚠️ Stay alert against scams.
+https://t.me/ScamShieldMalaysiaBot`;
+}
+
+async function copyResult() {
+  try {
+    await navigator.clipboard.writeText(buildShareText());
+
+    alert(
+      language === "zh"
+        ? "结果已复制"
+        : language === "ms"
+        ? "Keputusan telah disalin"
+        : "Result copied"
+    );
+  } catch (err) {
+    console.error(err);
+  }
+}
+  
 function reset() {
   setResult(null);
   setText("");
@@ -1345,6 +1376,52 @@ function reset() {
   >
     Open ScamShield Telegram Bot
   </a>
+</div>
+                  <div
+  style={{
+    display: "flex",
+    gap: 10,
+    flexWrap: "wrap",
+    marginBottom: 16
+  }}
+>
+  {/* WhatsApp Share */}
+  <a
+    href={`https://wa.me/?text=${encodeURIComponent(buildShareText())}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{
+      background: "#25D366",
+      color: "#fff",
+      padding: "12px 16px",
+      borderRadius: 12,
+      textDecoration: "none",
+      fontWeight: 700,
+      fontSize: 13,
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center"
+    }}
+  >
+    📤 Share to WhatsApp
+  </a>
+
+  {/* Copy */}
+  <button
+    onClick={copyResult}
+    style={{
+      background: "rgba(255,255,255,0.08)",
+      color: "#fff",
+      border: "1px solid rgba(255,255,255,0.08)",
+      padding: "12px 16px",
+      borderRadius: 12,
+      fontWeight: 700,
+      cursor: "pointer",
+      fontSize: 13
+    }}
+  >
+    📋 Copy Result
+  </button>
 </div>
                   <button onClick={reset} style={{ width: "100%", padding: "13px 0", borderRadius: 12, fontSize: 14, fontWeight: 700, fontFamily: "inherit", background: "transparent", border: "2px solid rgba(0,0,0,0.12)", color: "#3A3A3C", cursor: "pointer" }}>
                     Check Another Message
