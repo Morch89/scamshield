@@ -1437,15 +1437,18 @@ function reset() {
   <button
     onClick={copyResult}
     style={{
-      background: "rgba(255,255,255,0.08)",
-      color: "#fff",
-      border: "1px solid rgba(255,255,255,0.08)",
-      padding: "12px 16px",
-      borderRadius: 12,
-      fontWeight: 700,
-      cursor: "pointer",
-      fontSize: 13
-    }}
+  background: "#0F1A2A",
+  color: "#FFFFFF",
+  border: "1px solid rgba(0,0,0,0.12)",
+  padding: "12px 16px",
+  borderRadius: 12,
+  fontWeight: 800,
+  cursor: "pointer",
+  fontSize: 13,
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center"
+}}
   >
     📋 Copy Result
   </button>
