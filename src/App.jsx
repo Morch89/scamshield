@@ -724,6 +724,11 @@ function buildShareText() {
     text?.trim() ||
     (screenshotFileName ? `[Screenshot uploaded: ${screenshotFileName}]` : "");
 
+  const shortInput =
+    originalInput.length > 500
+      ? originalInput.slice(0, 500) + "..."
+      : originalInput;
+
   const redFlags =
     result.redFlags?.length > 0
       ? `\n\nWarning Signs:\n• ${result.redFlags.join("\n• ")}`
@@ -737,7 +742,7 @@ function buildShareText() {
   return `🛡 ScamShield Malaysia
 
 Checked:
-${originalInput}
+${shortInput}
 
 Verdict: ${result.verdict}
 Risk Score: ${result.riskScore}/100
