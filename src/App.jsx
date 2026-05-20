@@ -720,15 +720,37 @@ try {
 function buildShareText() {
   if (!result) return "";
 
+  const originalInput =
+    text?.trim() ||
+    (screenshotFileName ? `[Screenshot uploaded: ${screenshotFileName}]` : "");
+
+  const redFlags =
+    result.redFlags?.length > 0
+      ? `\n\nWarning Signs:\n• ${result.redFlags.join("\n• ")}`
+      : "";
+
+  const whatToDo =
+    result.whatToDo?.length > 0
+      ? `\n\nWhat To Do:\n• ${result.whatToDo.join("\n• ")}`
+      : "";
+
   return `🛡 ScamShield Malaysia
+
+Checked:
+${originalInput}
 
 Verdict: ${result.verdict}
 Risk Score: ${result.riskScore}/100
+Category: ${result.scamFamily || result.scamType || "Unknown"}
+Target Brand: ${result.targetBrand || "Unknown"}
 
 Summary:
-${result.summary}
+${result.summary}${redFlags}${whatToDo}
 
-⚠️ Stay alert against scams.
+Check suspicious messages here:
+https://scamshield-malaysia.vercel.app
+
+Telegram bot:
 https://t.me/ScamShieldMalaysiaBot`;
 }
 
